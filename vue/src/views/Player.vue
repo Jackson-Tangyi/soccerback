@@ -41,9 +41,11 @@
       <el-table-column prop="area" label="Area"></el-table-column>
       <el-table-column label="Image" width="100px">
         <template #default="scope">
-          <template slot-scope="scope">
-            <el-button type="primary" @click="preview(scope.row.image)">预览</el-button>
-          </template>
+          <el-image
+              style="width: 60px; height: 80px"
+              :src="scope.row.image"
+              :preview-src-list="[scope.row.image]">
+          </el-image>
         </template>
       </el-table-column>
       <el-table-column label="Operations"  width="200" align="center">
@@ -111,7 +113,7 @@
         </el-form-item>
         <el-form-item label="球员照片">
           <el-upload
-              action="http://localhost:9090/files/upload"
+              action="http://localhost:9090/file/upload"
               :show-file-list="false"
               style="display: inline-block"
               :on-success="filesUploadSuccess">
@@ -300,10 +302,7 @@ export default {
     },
     filesUploadSuccess(res){
       console.log(res)
-      // this.form.image=res.data
-    },
-    preview(url){
-      window.open('https://file.keking.cn/onlinePreview?url=' + encodeURIComponent(window.btoa((url))))
+      this.form.image=res
     }
 
   }

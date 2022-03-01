@@ -92,7 +92,7 @@ public class PlayerController {
         writer.write(list,true);
         //设置浏览器响应的格式
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        String fileName= URLEncoder.encode("User_Table","UTF-8");
+        String fileName= URLEncoder.encode("Player_Table","UTF-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
 
         ServletOutputStream out=response.getOutputStream();
