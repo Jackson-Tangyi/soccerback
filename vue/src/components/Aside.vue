@@ -19,7 +19,7 @@
       </template>
     </el-menu-item>
 
-    <el-submenu index="">
+    <el-submenu index="1">
       <template slot="title">
         <i class="el-icon-house"></i>
         <span slot="title">System Info</span>
@@ -36,15 +36,28 @@
           <span>Coach</span>
         </template>
       </el-menu-item>
-      <el-menu-item index="/player">
-        <template>
+
+      <el-submenu index="2">
+        <template slot="title">
           <i class="el-icon-s-custom"></i>
           <span>Player</span>
         </template>
-      </el-menu-item>
+        <el-menu-item index="/player">
+          <template>
+            <i class="el-icon-s-custom"></i>
+            <span>PlayerInfo</span>
+          </template>
+        </el-menu-item>
+        <el-menu-item index="/playerChart">
+          <template>
+            <i class="el-icon-s-data"></i>
+            <span>PlayerChart</span>
+          </template>
+        </el-menu-item>
+      </el-submenu>
     </el-submenu>
 
-    <el-submenu index="2">
+    <el-submenu index="3">
       <template slot="title">
         <i class="el-icon-loading"></i>
         <span slot="title">Game Info</span>
@@ -53,13 +66,9 @@
         <i class="el-icon-coordinate"></i>
         <span>Game</span>
       </el-menu-item>
-      <el-menu-item index="/chart">
-        <i class="el-icon-pie-chart"></i>
-        <span>Chart</span>
-      </el-menu-item>
     </el-submenu>
 
-    <el-submenu index="3">
+    <el-submenu index="4">
       <template slot="title">
         <i class="el-icon-scissors"></i>
         <span slot="title">Treatment</span>
@@ -68,13 +77,24 @@
         <i class="el-icon-user"></i>
         <span>Doctor</span>
       </el-menu-item>
-      <el-menu-item index="/cure">
-        <i class="el-icon-school"></i>
-        <span>Cure</span>
-      </el-menu-item>
+
+      <el-submenu index="5">
+        <template slot="title">
+          <i class="el-icon-s-custom"></i>
+          <span>Cure</span>
+        </template>
+        <el-menu-item index="/cure">
+          <i class="el-icon-school"></i>
+          <span>CureInfo</span>
+        </el-menu-item>
+        <el-menu-item index="/cureChart">
+          <i class="el-icon-pie-chart"></i>
+          <span>CureChart</span>
+        </el-menu-item>
+      </el-submenu>
     </el-submenu>
 
-    <el-submenu index="4">
+    <el-submenu index="6">
       <template slot="title">
         <i class="el-icon-office-building"></i>
         <span slot="title">Office</span>
@@ -83,7 +103,10 @@
         <i class="el-icon-monitor"></i>
         <span>Director</span>
       </el-menu-item>
-
+      <el-menu-item index="/file">
+        <i class="el-icon-monitor"></i>
+        <span>File</span>
+      </el-menu-item>
     </el-submenu>
 
   </el-menu>

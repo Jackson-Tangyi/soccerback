@@ -32,14 +32,21 @@
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="100" sortable></el-table-column>
-      <el-table-column prop="number" label="Number" width="100" sortable></el-table-column>
-      <el-table-column prop="name" label="Name" width="140"></el-table-column>
-      <el-table-column prop="age" label="Age" width="120"></el-table-column>
-      <el-table-column prop="weight" label="Weight" width="100"></el-table-column>
-      <el-table-column prop="height" label="Height" width="80"></el-table-column>
-      <el-table-column prop="area" label="Area"></el-table-column>
-      <el-table-column label="Image" width="100px">
+      <el-table-column prop="id" label="ID" width="55" sortable></el-table-column>
+      <el-table-column prop="number" label="Number" width="80" sortable></el-table-column>
+      <el-table-column prop="name" label="Name" width="100"></el-table-column>
+      <el-table-column prop="age" label="Age" width="55"></el-table-column>
+      <el-table-column prop="weight" label="Weight" width="70"></el-table-column>
+      <el-table-column prop="height" label="Height" width="70"></el-table-column>
+      <el-table-column prop="country" label="Country" width="80"></el-table-column>
+      <el-table-column prop="speed" label="Speed" width="60"></el-table-column>
+      <el-table-column prop="defence" label="Defence" width="75"></el-table-column>
+      <el-table-column prop="power" label="Power" width="60"></el-table-column>
+      <el-table-column prop="shot" label="Shot" width="50"></el-table-column>
+      <el-table-column prop="pass" label="Pass" width="50"></el-table-column>
+      <el-table-column prop="dribbling" label="Dribbling" width="80"></el-table-column>
+      <el-table-column prop="area" label="Area" width="60"></el-table-column>
+      <el-table-column label="Image" width="90px">
         <template #default="scope">
           <el-image
               style="width: 60px; height: 80px"
@@ -82,7 +89,7 @@
     <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="80px" size="small">
         <el-form-item label="Number">
-          <el-input v-model="form.number" autocomplete="off"></el-input>
+          <el-input v-model="form.number" autocomplete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="Name">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -110,6 +117,27 @@
               </el-option>
             </el-option-group>
           </el-select>
+        </el-form-item>
+        <el-form-item label="Country">
+          <el-input v-model="form.country" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Speed">
+          <el-input v-model="form.speed" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Pass">
+          <el-input v-model="form.pass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Defence">
+          <el-input v-model="form.defence" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Power">
+          <el-input v-model="form.power" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Shot">
+          <el-input v-model="form.shot" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Dribbling">
+          <el-input v-model="form.dribbling" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="球员照片">
           <el-upload

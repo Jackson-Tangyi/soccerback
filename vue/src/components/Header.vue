@@ -38,18 +38,16 @@
 <script>
 export default {
   name: "Header",
-  data(){
-    return{
-        user:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}//parse将JSON转成对象
-    }
-  },
   props:{
     collapseBtnClass:String,
+    user:Object
   },
   methods:{
     collapse(){
-      this.$parent.$parent.$parent.$parent.collapse() //通过4个 $parent 组件找到父组件，从而调用其折叠方法
-      // this.$emit("asideCollapse")
+      // this.$parent.$parent.$parent.$parent.collapse() //通过4个 $parent 组件找到父组件，从而调用其折叠方法
+
+      //通过触发父组件
+      this.$emit("asideCollapse")
     },
     logout(){
       this.$router.push('/login')
@@ -61,12 +59,8 @@ export default {
     currentPathName () {
       return this.$store.state.currentPathName;　　//需要监听的数据
     }
-  },
-  watch: {
-    currentPathName (newVal, oldVal) {
-      console.log(newVal)
   }
-  }
+
 }
 </script>
 

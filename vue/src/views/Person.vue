@@ -45,26 +45,33 @@ export default {
       }
   },
   created(){
-    this.load()
+    this.getUser().then(res => {
+      console.log(res)
+      this.form = res
+    })
   },
   methods:{
     save(){
       request.post("/user",this.form).then(res=>{
         if(res.code ==='200'){
-          this.$message.success("Save successfully")
-          this.load()
+
+          this.$message.success("Update successfully! Please refresh!")
+          // 触发父级更新User的方法
+          this.$emit("refreshUser")
+
+          // 更新浏览器存储的用户信息
+          this.getUser().then(res => {
+            res.token = JSON.parse(localStorage.getItem("user")).token
+            localStorage.setItem("user", JSON.stringify(res))
+          })
         }else {
           this.$message.error("Failed!")
 
         }
       })
     },
-    load(){
-      request.get("/user/username/"+this.user.username).then(res=>{
-        if(res.code==='200'){
-          this.form=res.data
-        }
-      })
+    async getUser(){//头像改变了了之后需要在Header中更新,使用同步
+      return (await request.get("/user/username/"+this.user.username)).data
     },
     handleAvatarSuccess(res){
       this.form.avatarUrl = res
@@ -73,6 +80,32 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.avatar-uploader {
+  text-align: center;
+  padding-bottom: 10px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 138px;
+  height: 138px;
+  line-height: 138px;
+  text-align: center;
+}
+.avatar {
+  width: 138px;
+  height: 138px;
+  display: block;
+}
 </style>

@@ -20,8 +20,10 @@ const routes = [
       {path:'doctor',name: 'Doctor',component:()=>import('../views/Doctor.vue')},
       {path:'director',name: 'Director',component:()=>import('../views/Director.vue')},
       {path:'cure',name:'Cure',component:()=>import('../views/Cure.vue')},
-      {path:'chart',name: 'Chart',component:()=>import('../views/Chart.vue')},
-      {path:'password',name: 'Password',component:()=>import('../views/Password.vue')}
+      {path:'cureChart',name: 'CureChart',component:()=>import('../views/CureChart.vue')},
+      {path:'password',name: 'Password',component:()=>import('../views/Password.vue')},
+      {path: 'file',name: 'File',component:()=>import('../views/File.vue')},
+      {path: 'playerChart',name: 'PlayerChart',component:()=>import('../views/PlayerChart.vue')}
     ]
   },
   {

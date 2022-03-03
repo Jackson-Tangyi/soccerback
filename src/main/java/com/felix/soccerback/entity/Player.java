@@ -50,5 +50,19 @@ public class Player implements Serializable {
       @ApiModelProperty("球员照片")
       private String image;
 
+      @ApiModelProperty("国籍")
+      private String country;
+      @ApiModelProperty("速度")
+      private int speed;
+      @ApiModelProperty("力量")
+      private int power;
+      @ApiModelProperty("防守")
+      private int defence;
+      @ApiModelProperty("盘带")
+      private int dribbling;
+      @ApiModelProperty("传球")
+      private int pass;
+      @ApiModelProperty("射门")
+      private int shot;
 
 }
