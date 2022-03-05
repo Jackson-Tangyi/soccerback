@@ -41,8 +41,9 @@
       <el-table-column prop="address" label="Address"></el-table-column>
       <el-table-column prop="phone" label="Phone"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
-      <el-table-column label="Operations"  width="200" align="center">
+      <el-table-column label="Operations"  width="300" align="center">
         <template slot-scope="scope">
+          <el-button type="primary" @click="handleShowTreatments(scope.row.treatments)">Treatment<i class="el-icon-folder-opened"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -102,6 +103,14 @@
       </div>
     </el-dialog>
 
+    <el-dialog :visible.sync="treatmentVis">
+      <el-table :data="treatments" border stripe>
+        <el-table-column prop="description" label="Description" width="120"></el-table-column>
+        <el-table-column prop="start" label="Start"></el-table-column>
+        <el-table-column prop="end" label="End"></el-table-column>
+        <el-table-column prop="player" label="Player"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -121,7 +130,9 @@ export default {
       address: "",
       form: {},
       dialogFormVisible: false,
-      multipleSelection: []
+      treatmentVis:false,
+      multipleSelection: [],
+      treatments:[]
     }
   },
   created() {
@@ -159,6 +170,10 @@ export default {
     handleAdd(){//先打开然后再把值传进去
       this.dialogFormVisible=true
       this.form={}
+    },
+    handleShowTreatments(treatments){
+      this.treatments=treatments
+      this.treatmentVis=true
     },
     handleEdit(row){//先传值再打开会话窗口
       this.form=row

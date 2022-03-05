@@ -62,21 +62,23 @@ public class PlayerController {
         return Result.success(playerService.list());
     }
 
+    //给多选框使用
+    @GetMapping("/findPlayers")
+    public Result findCoaches() {
+        return Result.success(playerService.list());
+    }
+
     @GetMapping("/{id}")
     public Result findOne(@PathVariable Integer id) {
         return Result.success(playerService.getById(id));
     }
 
+
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam Integer pageSize,
                            @RequestParam(defaultValue = "") String name) {
-        QueryWrapper<Player> queryWrapper = new QueryWrapper<>();
-        if(!"".equals(name)){
-            queryWrapper.like("name",name);
-        }
-        queryWrapper.orderByDesc("id");
-        return Result.success(playerService.page(new Page<>(pageNum, pageSize), queryWrapper));
+        return Result.success(playerService.findPage(new Page<>(pageNum, pageSize), name));
     }
 
     @GetMapping("/export")

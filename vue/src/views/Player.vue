@@ -32,21 +32,21 @@
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="55" sortable></el-table-column>
-      <el-table-column prop="number" label="Number" width="80" sortable></el-table-column>
+      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
+      <el-table-column prop="number" label="Number" width="100" sortable></el-table-column>
       <el-table-column prop="name" label="Name" width="100"></el-table-column>
-      <el-table-column prop="age" label="Age" width="55"></el-table-column>
-      <el-table-column prop="weight" label="Weight" width="70"></el-table-column>
-      <el-table-column prop="height" label="Height" width="70"></el-table-column>
-      <el-table-column prop="country" label="Country" width="80"></el-table-column>
-      <el-table-column prop="speed" label="Speed" width="60"></el-table-column>
-      <el-table-column prop="defence" label="Defence" width="75"></el-table-column>
-      <el-table-column prop="power" label="Power" width="60"></el-table-column>
-      <el-table-column prop="shot" label="Shot" width="50"></el-table-column>
-      <el-table-column prop="pass" label="Pass" width="50"></el-table-column>
-      <el-table-column prop="dribbling" label="Dribbling" width="80"></el-table-column>
-      <el-table-column prop="area" label="Area" width="60"></el-table-column>
-      <el-table-column label="Image" width="90px">
+      <el-table-column prop="age" label="Age" width="100"></el-table-column>
+      <el-table-column prop="weight" label="Weight" width="100"></el-table-column>
+      <el-table-column prop="height" label="Height" width="100"></el-table-column>
+      <el-table-column prop="country" label="Country" width="100"></el-table-column>
+      <el-table-column label="Ability" align="center">
+        <template slot-scope="scope">
+          <el-button type="success" @click="handleShow(scope.row.id)">Display <i class="el-icon-data-analysis"></i></el-button>
+          <el-button type="primary" @click="handleShowTreatments(scope.row.treatments)">Treatment<i class="el-icon-folder-opened"></i></el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="area" label="Area" width="100"></el-table-column>
+      <el-table-column label="Image" width="120">
         <template #default="scope">
           <el-image
               style="width: 60px; height: 80px"
@@ -55,7 +55,7 @@
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column label="Operations"  width="200" align="center">
+      <el-table-column label="Operations" align="center">
         <template slot-scope="scope">
           <el-button type="success" @click="handleEdit(scope.row)">Edit <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
@@ -155,11 +155,25 @@
       </div>
     </el-dialog>
 
+    <el-dialog :visible.sync="treatmentVis">
+      <el-table :data="treatments" border stripe>
+        <el-table-column prop="description" label="Description" width="120"></el-table-column>
+        <el-table-column prop="start" label="Start"></el-table-column>
+        <el-table-column prop="end" label="End"></el-table-column>
+        <el-table-column prop="doctor" label="Doctor"></el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <el-dialog :visible.sync="radarVisible">
+      <div id="main" style="width: 400px; height: 400px"></div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import request from "@/utils/request";
+import * as echarts from 'echarts';
 
 export default {
   name: "Player",
@@ -172,7 +186,10 @@ export default {
       name: "",
       form: {},
       dialogFormVisible: false,
+      radarVisible:false,
+      treatmentVis:false,
       multipleSelection: [],
+      treatments:[],
       options: [{
         label: '前场',
         options: [{
@@ -237,6 +254,68 @@ export default {
     //请求分页数据
     this.load()
   },methods:{
+    displayRadar(val){
+      var chartDom = document.getElementById('main');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: 'Ability Display'
+        },
+        legend: {
+          bottom:5,
+          data: ['Allocated Budget']
+        },
+        radar: {
+          axisName:{
+            color:'rgb(255,0,0)'
+          },
+          indicator: [
+            { name: 'Speed', max: 100 },
+            { name: 'Power', max: 100 },
+            { name: 'defence', max: 100 },
+            { name: 'dribbling', max: 100 },
+            { name: 'pass', max: 100 },
+            { name: 'shot', max: 100 }
+          ],
+          splitArea: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(238, 197, 102, 1.5)'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'Budget vs spending',
+            type: 'radar',
+            data: [
+              {
+                value: [],
+                name: 'Allocated Budget'
+              }
+            ],
+            label:{
+              normal:{
+                show:true,
+                // formatter:function (params){
+                //   return params.value
+                // }
+              }
+            }
+          }
+        ]
+      };
+
+      request.get("/echarts/radar/ "+val).then(res=>{
+        option.series[0].data[0]=res.data
+        option && myChart.setOption(option);
+      })
+
+    },
     load(){
       request.get("/player/page",{
         params:{
@@ -269,6 +348,16 @@ export default {
     handleEdit(row){//先传值再打开会话窗口
       this.form=row
       this.dialogFormVisible=true
+    },
+    handleShow(val){
+      this.radarVisible=true
+      setTimeout(()=>{
+        this.displayRadar(val)
+      },300)
+    },
+    handleShowTreatments(treatments){
+      this.treatments=treatments
+      this.treatmentVis=true
     },
     handleSelectionChange(val){
       console.log(val)

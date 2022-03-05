@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.felix.soccerback.mapper.CureMapper">
 
+    <select id="findPage" resultType="com.felix.soccerback.entity.Cure">
+        select club_cure.*,club_player.name as player,club_doctor.name as doctor from club_cure
+        left join club_player
+        on club_cure.pnum=club_player.number
+        left join club_doctor
+        on club_cure.did=club_doctor.id
+        <where>
+            <if test="description != null and description != ''">
+                and club_cure.description like concat('%', #{description},'%')
+            </if>
+        </where>
+    </select>
+<!--  club_cure.description ,因为doctor里面有同名字段，所以指定具体的表 -->
 </mapper>

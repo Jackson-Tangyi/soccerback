@@ -1,12 +1,17 @@
 package com.felix.soccerback.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -31,7 +36,9 @@ public class Game implements Serializable {
       private String name;
 
       @ApiModelProperty("比赛日期")
-      private LocalDate date;
+      @DateTimeFormat(pattern="yyyy-MM-dd")//页面写入数据库时格式化
+      @JsonFormat(pattern="yyyy-MM-dd")
+      private Date date;
 
       @ApiModelProperty("主客场")
       private String homeaway;
@@ -39,9 +46,12 @@ public class Game implements Serializable {
       @ApiModelProperty("最终比分（统计球员的进球数）")
       private String score;
 
-    private Integer coachid;
+      private Integer coachid;
 
-    private String place;
+      private String place;
+
+      @TableField(exist = false)
+      private String coach;
 
 
 }

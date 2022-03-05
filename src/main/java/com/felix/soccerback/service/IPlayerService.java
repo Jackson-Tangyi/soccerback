@@ -1,5 +1,6 @@
 package com.felix.soccerback.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.felix.soccerback.entity.Player;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IPlayerService extends IService<Player> {
 
+    Page<Player> findPage(Page<Player> page, String name);
 }

@@ -62,6 +62,12 @@ public class DoctorController {
         return Result.success(doctorService.list());
     }
 
+    //给多选框使用
+    @GetMapping("/findDoctors")
+    public Result findCoaches() {
+        return Result.success(doctorService.list());
+    }
+
     @GetMapping("/{id}")
     public Result findOne(@PathVariable Integer id) {
         return Result.success(doctorService.getById(id));
@@ -73,18 +79,7 @@ public class DoctorController {
                            @RequestParam(defaultValue = "") String name,
                            @RequestParam(defaultValue = "") String email,
                            @RequestParam(defaultValue = "") String address) {
-        QueryWrapper<Doctor> queryWrapper = new QueryWrapper<>();
-        if(!"".equals(name)){
-            queryWrapper.like("name",name);
-        }
-        if(!"".equals(email)){
-            queryWrapper.like("email",email);
-        }
-        if(!"".equals(address)){
-            queryWrapper.like("address",address);
-        }
-        queryWrapper.orderByDesc("id");
-        return Result.success(doctorService.page(new Page<>(pageNum, pageSize), queryWrapper));
+        return Result.success(doctorService.findPage(new Page<>(pageNum, pageSize), name,email,address));
     }
 
     @GetMapping("/export")

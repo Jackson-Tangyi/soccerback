@@ -2,4 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.felix.soccerback.mapper.PlayerMapper">
 
+    <resultMap id="pagePlayer" type="com.felix.soccerback.entity.Player">
+        <result column="id" property="id" />
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="weight" property="weight" />
+        <result column="height" property="height" />
+        <result column="age" property="age" />
+        <result column="area" property="area" />
+        <result column="image" property="image" />
+        <result column="country" property="country"/>
+        <result column="speed" property="speed" />
+        <result column="power" property="power" />
+        <result column="defence" property="defence" />
+        <result column="dribbling" property="dribbling" />
+        <result column="pass" property="pass" />
+        <result column="shot" property="shot" />
+        <collection property="treatments" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Cure">
+            <result column="cureDescription" property="description" />
+            <result column="cureStart" property="start" />
+            <result column="cureEnd" property="end"/>
+            <result column="cureDoctor" property="doctor"/>
+        </collection>
+    </resultMap>
+    <select id="findPage" resultMap="pagePlayer">
+        select club_player.*,cc.description as cureDescription,cc.start as cureStart,cc.end as cureEnd,cd.name as cureDoctor from club_player
+        left join club_cure as cc
+        on club_player.number=cc.pnum
+        left join club_doctor as cd
+        on cc.did=cd.id
+        <where>
+            <if test="name != null and name != ''">
+                and club_player.name like concat('%', #{name} ,'%')
+            </if>
+        </where>
+    </select>
 </mapper>

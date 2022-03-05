@@ -2,4 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.felix.soccerback.mapper.GameMapper">
 
+<!--  关联查询  -->
+    <select id="findPage" resultType="com.felix.soccerback.entity.Game">
+        select club_game.*,club_coach.name as coach from club_game
+        left join club_coach
+        on club_game.coachid=club_coach.cid
+        <where>
+            <if test="name!=null and name !=''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+
+    </select>
 </mapper>

@@ -61,6 +61,11 @@ public class CoachController {
     public Result findAll() {
         return Result.success(coachService.list());
     }
+    //给多选框使用
+    @GetMapping("/findCoaches")
+    public Result findCoaches() {
+        return Result.success(coachService.list());
+    }
 
     @GetMapping("/{id}")
     public Result findOne(@PathVariable Integer id) {
@@ -73,18 +78,8 @@ public class CoachController {
                            @RequestParam(defaultValue = "") String name,
                            @RequestParam(defaultValue = "") String email,
                            @RequestParam(defaultValue = "") String address) {
-        QueryWrapper<Coach> queryWrapper = new QueryWrapper<>();
-        if(!"".equals(name)){
-            queryWrapper.like("name",name);
-        }
-        if(!"".equals(email)){
-            queryWrapper.like("email",email);
-        }
-        if(!"".equals(address)){
-            queryWrapper.like("address",address);
-        }
-        queryWrapper.orderByDesc("id");
-        return Result.success(coachService.page(new Page<>(pageNum, pageSize), queryWrapper));
+
+        return Result.success(coachService.findPage(new Page<>(pageNum, pageSize),name,email,address));
     }
 
     @GetMapping("/export")

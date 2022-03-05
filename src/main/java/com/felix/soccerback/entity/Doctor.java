@@ -1,9 +1,12 @@
 package com.felix.soccerback.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -50,5 +53,6 @@ public class Doctor implements Serializable {
 
       private String phone;
 
-
+      @TableField(exist = false)
+      private List<Cure> treatments;
 }

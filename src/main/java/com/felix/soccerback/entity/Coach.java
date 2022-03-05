@@ -1,7 +1,10 @@
 package com.felix.soccerback.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -48,5 +51,8 @@ public class Coach implements Serializable {
       private String address;
 
       private int cid;//外键
+
+      @TableField(exist = false)
+      private List<Game> games;
 
 }

@@ -42,8 +42,9 @@
       <el-table-column prop="address" label="Address"></el-table-column>
       <el-table-column prop="phone" label="Phone"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
-      <el-table-column label="Operations"  width="200" align="center">
+      <el-table-column label="Operations"  width="400" align="center">
         <template slot-scope="scope">
+          <el-button type="primary" @click="lookGames(scope.row.games)" >查看带领的比赛 <i class="el-icon-document"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -65,7 +66,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[5, 8, 10, 15]"
+          :page-sizes="[6, 8, 10, 15]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -106,6 +107,16 @@
       </div>
     </el-dialog>
 
+
+    <el-dialog title="课程信息" :visible.sync="vis" width="30%" >
+      <el-table :data="games" border stripe>
+        <el-table-column prop="name" label="Name" width="120"></el-table-column>
+        <el-table-column prop="date" label="date"></el-table-column>
+        <el-table-column prop="homeaway" label="Home/Away"></el-table-column>
+        <el-table-column prop="score" label="Score"></el-table-column>
+        <el-table-column prop="place" label="Place"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -119,13 +130,15 @@ export default {
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 5,
+      pageSize: 6,
       name: "",
       email: "",
       address: "",
       form: {},
       dialogFormVisible: false,
-      multipleSelection: []
+      multipleSelection: [],
+      vis:false,
+      games:[]
     }
   },
   created() {
@@ -133,6 +146,10 @@ export default {
     this.load()
   },
   methods:{
+    lookGames(games){
+      this.games=games
+      this.vis=true
+    },
     load(){
       request.get("/coach/page",{
         params:{

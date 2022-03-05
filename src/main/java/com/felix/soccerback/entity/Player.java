@@ -1,9 +1,12 @@
 package com.felix.soccerback.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -52,17 +55,25 @@ public class Player implements Serializable {
 
       @ApiModelProperty("国籍")
       private String country;
+
       @ApiModelProperty("速度")
       private int speed;
+
       @ApiModelProperty("力量")
       private int power;
+
       @ApiModelProperty("防守")
       private int defence;
+
       @ApiModelProperty("盘带")
       private int dribbling;
+
       @ApiModelProperty("传球")
       private int pass;
+
       @ApiModelProperty("射门")
       private int shot;
 
+      @TableField(exist = false)
+      private List<Cure> treatments;
 }
