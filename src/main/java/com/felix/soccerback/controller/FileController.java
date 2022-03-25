@@ -150,4 +150,26 @@ public class FileController {
         return Result.success(fileMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
+// 前台界面获取球队的照片
+    @GetMapping("/pic")
+    public Result findPic(){
+        QueryWrapper<Files> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("type","png").or().eq("type","jpg");
+        return Result.success(fileMapper.selectList(queryWrapper));
+    }
+
+// 前台获取视频文件
+    @GetMapping("/videos")
+    public Result findVideos(){
+        QueryWrapper<Files> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("type","MP4").or().eq("type","mp4");
+        return Result.success(fileMapper.selectList(queryWrapper));
+    }
+// 根据id查询视频 video details
+    @GetMapping("/video/{id}")
+    public Result findVideoById(@PathVariable Integer id) {
+        Files video = fileMapper.selectById(id);
+        return Result.success(video);
+}
+
 }

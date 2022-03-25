@@ -64,7 +64,7 @@ public class PlayerController {
 
     //给多选框使用
     @GetMapping("/findPlayers")
-    public Result findCoaches() {
+    public Result findPlayers() {
         return Result.success(playerService.list());
     }
 

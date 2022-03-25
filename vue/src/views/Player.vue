@@ -1,162 +1,233 @@
-<template>
+<template xmlns:el-col="http://www.w3.org/1999/html">
   <!-- 加不加div取决于整个页面 只能有一个根div 去包含所有 -->
   <div>
+<!--  搜索窗口  -->
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name" ></el-input>
-      <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
+      <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name" ></el-input>
+      <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
+      <el-button type="primary" @click="reset" round>Reset</el-button>
     </div>
-
+<!-- 新增、批量删除、导入、导出 -->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+      <el-button type="primary" @click="handleAdd" round>Add <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
-          confirm-button-text='确定'
-          cancel-button-text='我再想想'
+          confirm-button-text='Confirm'
+          cancel-button-text='Rethink'
           icon="el-icon-info"
           icon-color="red"
-          title="您确定批量删除这些数据吗？"
+          title="Confirm deletion？"
           @confirm="delBatch"
       >
-        <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
+        <el-button type="danger" slot="reference" round>Batch delete <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
       <el-upload action="http://localhost:9090/player/import"
                  :show-file-list="false"
                  accept="xlsx"
                  :on-success="handleExcelImportSuccess"
                  style="display: inline-block">
-        <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
+        <el-button type="success" class="ml-5" round>Import <i class="el-icon-bottom"></i></el-button>
       </el-upload>
-      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
+      <el-button type="info" @click="exp" class="ml-5" round>Export <i class="el-icon-top"></i></el-button>
     </div>
 
-    <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="number" label="Number" width="100" sortable></el-table-column>
-      <el-table-column prop="name" label="Name" width="100"></el-table-column>
-      <el-table-column prop="age" label="Age" width="100"></el-table-column>
-      <el-table-column prop="weight" label="Weight" width="100"></el-table-column>
-      <el-table-column prop="height" label="Height" width="100"></el-table-column>
-      <el-table-column prop="country" label="Country" width="100"></el-table-column>
-      <el-table-column label="Ability" align="center">
-        <template slot-scope="scope">
-          <el-button type="success" @click="handleShow(scope.row.id)">Display <i class="el-icon-data-analysis"></i></el-button>
-          <el-button type="primary" @click="handleShowTreatments(scope.row.treatments)">Treatment<i class="el-icon-folder-opened"></i></el-button>
+<!-- 数据展示表格   -->
+    <el-table :data="tableData" stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
+      <el-table-column type="expand" label="Detail" width="80">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand" border="true">
+            <el-form-item label=" Name:">
+              <span>{{ props.row.name }}</span>
+            </el-form-item>
+            <el-form-item label=" Number :">
+              <span>{{ props.row.number}}</span>
+            </el-form-item>
+            <el-form-item label=" Weight :">
+              <span>{{ props.row.weight }} kg</span>
+            </el-form-item>
+            <el-form-item label=" Height :">
+              <span>{{ props.row.height }} cm</span>
+            </el-form-item>
+            <el-form-item label=" Country :">
+              <span>{{ props.row.country }}</span>
+            </el-form-item>
+          </el-form>
         </template>
       </el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
+      <el-table-column prop="name" label="Name" ></el-table-column>
       <el-table-column prop="area" label="Area" width="100"></el-table-column>
-      <el-table-column label="Image" width="120">
+      <el-table-column label="Image" >
         <template #default="scope">
           <el-image
-              style="width: 60px; height: 80px"
+              style="width: 50px; height: 50px"
               :src="scope.row.image"
               :preview-src-list="[scope.row.image]">
           </el-image>
         </template>
       </el-table-column>
+      <el-table-column label="Ability" align="center">
+        <template slot-scope="scope">
+          <el-button type="success" @click="handleShow(scope.row.id)" round>Show<i class="el-icon-data-analysis"></i></el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="Cure records" align="center">
+        <template slot-scope="scope">
+          <el-button type="info" @click="handleShowTreatments(scope.row.treatments)" round>Cure records<i class="el-icon-folder-opened"></i></el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="Operations" align="center">
         <template slot-scope="scope">
-          <el-button type="success" @click="handleEdit(scope.row)">Edit <i class="el-icon-edit"></i></el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)" circle></el-button>
           <el-popconfirm
               class="ml-5"
-              confirm-button-text='确定'
-              cancel-button-text='我再想想'
+              confirm-button-text='Confirm'
+              cancel-button-text='Rethink'
               icon="el-icon-info"
               icon-color="red"
-              title="您确定删除吗？"
+              title="Confirm deletion？"
               @confirm="del(scope.row.id)"
           >
-            <el-button type="danger" slot="reference">Delete <i class="el-icon-remove-outline"></i></el-button>
+            <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
+
     <!--    分页插件    -->
     <div style="padding: 10px 0">
       <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[5, 8, 10, 15]"
+          :page-sizes="[5, 10, 15]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
     </div>
 
-    <!-- 会话框 -->
-    <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%" >
+    <!-- 编辑窗口 -->
+    <el-dialog title="Player Information" :visible.sync="dialogFormVisible" width="50%" v-el-drag-dialog>
       <el-form label-width="80px" size="small">
-        <el-form-item label="Number">
-          <el-input v-model="form.number" autocomplete="off" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="Name">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Age">
-          <el-input v-model="form.age" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Height">
-          <el-input v-model="form.height" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Weight">
-          <el-input v-model="form.weight" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="球员位置">
-          <el-select v-model="form.area" placeholder="请选择球员位置">
-            <el-option-group
-                v-for="area in options"
-                :key="area.label"
-                :label="area.label">
-              <el-option
-                  v-for="item in area.options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-              </el-option>
-            </el-option-group>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Country">
-          <el-input v-model="form.country" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Speed">
-          <el-input v-model="form.speed" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Pass">
-          <el-input v-model="form.pass" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Defence">
-          <el-input v-model="form.defence" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Power">
-          <el-input v-model="form.power" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Shot">
-          <el-input v-model="form.shot" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Dribbling">
-          <el-input v-model="form.dribbling" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="球员照片">
-          <el-upload
-              action="http://localhost:9090/file/upload"
-              :show-file-list="false"
-              style="display: inline-block"
-              :on-success="filesUploadSuccess">
-            <el-button type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Number" label-width="120px">
+              <el-input-number v-model="form.number" :min="1" :max="99" :disabled="form.number?true:false"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Age" label-width="120px">
+              <el-input-number v-model="form.age" :min="1" :max="120"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Name" label-width="120px">
+              <el-input prefix-icon="el-icon-edit" v-model="form.name" autocomplete="off" style="width: 200px"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Country" label-width="120px">
+              <el-input prefix-icon="el-icon-s-flag" v-model="form.country" autocomplete="off" style="width: 200px"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Height" label-width="120px">
+              <el-input-number v-model="form.height" :min="1" :max="200"></el-input-number> cm
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Weight" label-width="120px">
+              <el-input-number v-model="form.weight" :min="1" :max="100"></el-input-number> kg
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Speed" label-width="120px">
+              <el-input-number v-model="form.speed" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Pass" label-width="120px">
+              <el-input-number v-model="form.pass" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Defence" label-width="120px">
+              <el-input-number v-model="form.defence" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Power" label-width="120px">
+              <el-input-number v-model="form.power" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Shot" label-width="120px">
+              <el-input-number v-model="form.shot" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Dribbling" label-width="120px">
+              <el-input-number v-model="form.dribbling" :min="1" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item label="Area" label-width="120px">
+            <el-select v-model="form.area" placeholder="Select">
+              <el-option-group
+                  v-for="area in options"
+                  :key="area.label"
+                  :label="area.label">
+                <el-option
+                    v-for="item in area.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+              </el-option-group>
+            </el-select>
+          </el-form-item>
+        </el-row>
+
+        <el-row>
+          <el-form-item label="Player Image" label-width="120px">
+            <el-upload
+                action="http://localhost:9090/file/upload"
+                :show-file-list="false"
+                style="display: inline-block"
+                :on-success="filesUploadSuccess">
+              <el-button type="primary">Upload</el-button>
+            </el-upload>
+          </el-form-item>
+        </el-row>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="save">Save</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="treatmentVis">
+<!-- 治疗记录窗口 -->
+    <el-dialog :visible.sync="treatmentVis" v-el-drag-dialog>
       <el-table :data="treatments" border stripe>
+        <el-table-column prop="place" label="Place" width="120"></el-table-column>
         <el-table-column prop="description" label="Description" width="120"></el-table-column>
         <el-table-column prop="start" label="Start"></el-table-column>
         <el-table-column prop="end" label="End"></el-table-column>
@@ -164,7 +235,8 @@
       </el-table>
     </el-dialog>
 
-    <el-dialog :visible.sync="radarVisible">
+<!-- 球员能力值雷达图展示 -->
+    <el-dialog :visible.sync="radarVisible" v-el-drag-dialog>
       <div id="main" style="width: 400px; height: 400px"></div>
     </el-dialog>
 
@@ -174,9 +246,14 @@
 <script>
 import request from "@/utils/request";
 import * as echarts from 'echarts';
+import elDragDialog from "@/directive/el-dragDialog";
+
 
 export default {
   name: "Player",
+  directives:{
+    elDragDialog
+  },
   data(){
     return{
       tableData: [],
@@ -191,61 +268,58 @@ export default {
       multipleSelection: [],
       treatments:[],
       options: [{
-        label: '前场',
+        label: 'Front Court',
         options: [{
-          value: '中锋',
-          label: '中锋'
+          value: 'Striker ',//中锋
+          label: 'ST '
         }, {
-          value: '影锋',
-          label: '影锋'
+          value: 'Center Forward',//影子前锋
+          label: 'CF'
         },{
-          value: '左边锋',
-          label: '左边锋'
+          value: 'Left Wing',//左边锋
+          label: 'LW'
         },{
-          value: '右边锋',
-          label: '右边锋'
+          value: 'Right Wing',//右边锋
+          label: 'RW'
         }]
       }, {
-        label: '中场',
+        label: 'Midfielder ',
         options: [{
-          value: '前腰',
-          label: '前腰'
+          value: 'Center Midfielder',//中场
+          label: 'CM'
         }, {
-          value: '左中场',
-          label: '左中场'
+          value: 'Center Defensive Midfielder',//后腰
+          label: 'CDM'
         }, {
-          value: '右中场',
-          label: '右中场'
+          value: 'Center Attacking Midfielder',//前腰
+          label: 'CAM'
         }, {
-          value: '后腰',
-          label: '后腰'
-        },{
-          value: '左边翼卫',
-          label: '左边翼卫'
-        },{
-          value: '右边翼卫',
-          label: '右边翼卫'
+          value: 'Left Midfielder',//左中场
+          label: 'LM'
+        }, {
+          value: 'Right Midfielder',//右中场
+          label: 'RM'
         }]
       },{
-        label: '后场',
+        label: 'Defender ',
         options: [{
-          value: '左中卫',
-          label: '左中卫'
+          value: 'Sweeper',//清道夫
+          label: 'SW'
         }, {
-          value: '右中卫',
-          label: '右中卫'
+          value: 'Center-back',//中后卫
+          label: 'CB'
         }, {
-          value: '左边卫',
-          label: '左边卫'
+          value: 'Left-back',//左边后卫
+          label: 'LB'
         }, {
-          value: '右边卫',
-          label: '右边卫'
+          value: 'Right-back',//右边后卫
+          label: 'RB'
         }]
       },{
-        label: '门将',
+        label: 'Goal Keeper',
         options: [{
-          value: '门将',
-          label: '门将'
+          value: 'Goal Keeper',//门将
+          label: 'GK'
         }]
       }]
     }
@@ -300,10 +374,7 @@ export default {
             ],
             label:{
               normal:{
-                show:true,
-                // formatter:function (params){
-                //   return params.value
-                // }
+                show:true
               }
             }
           }
@@ -333,11 +404,11 @@ export default {
     save(){//会话框
       request.post("/player",this.form).then(res=>{
         if(res.code === '200'){
-          this.$message.success("保存成功")
+          this.$message.success("Save successfully")
           this.dialogFormVisible=false
           this.load()
         }else {
-          this.$message.error("保存失败")
+          this.$message.error("Save failed")
         }
       })
     },
@@ -366,10 +437,10 @@ export default {
     del(id){//删除某一个
       request.delete("/player/"+id).then(res=>{
         if(res.code === '200'){
-          this.$message.success("删除成功")
+          this.$message.success("Delete successfully")
           this.load()
         }else{
-          this.$message.error("删除失败")
+          this.$message.error("Delete failed")
         }
       })
     },
@@ -377,10 +448,10 @@ export default {
       let ids=this.multipleSelection.map(v=>v.id)// [{}, {}, {}] => [1,2,3] 把一个对象的数组转成一个纯id的数组
       request.post("/player/del/batch/",ids).then(res =>{
         if(res.code === '200'){
-          this.$message.success("批量删除成功")
+          this.$message.success("Batch deletion successfully")
           this.load()
         }else {
-          this.$message.error("批量删除失败")
+          this.$message.error("Batch delete failed")
         }
       })
     },
@@ -414,7 +485,7 @@ export default {
       window.open("http://localhost:9090/player/export")
     },
     handleExcelImportSuccess() {
-      this.$message.success("导入成功")
+      this.$message.success("Import successfully")
       this.load()
     },
     filesUploadSuccess(res){
@@ -427,5 +498,19 @@ export default {
 </script>
 
 <style scoped>
+
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: rgb(48, 65, 86);
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: bold;
+}
 
 </style>

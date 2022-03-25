@@ -66,7 +66,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[6, 8, 10, 15]"
+          :page-sizes="[10, 15]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -108,13 +108,14 @@
     </el-dialog>
 
 
-    <el-dialog title="课程信息" :visible.sync="vis" width="30%" >
+    <el-dialog title="指教信息" :visible.sync="vis" width="50%" >
       <el-table :data="games" border stripe>
         <el-table-column prop="name" label="Name" width="120"></el-table-column>
         <el-table-column prop="date" label="date"></el-table-column>
         <el-table-column prop="homeaway" label="Home/Away"></el-table-column>
         <el-table-column prop="score" label="Score"></el-table-column>
         <el-table-column prop="place" label="Place"></el-table-column>
+        <el-table-column prop="type" label="Type"></el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -130,7 +131,7 @@ export default {
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 6,
+      pageSize: 10,
       name: "",
       email: "",
       address: "",

@@ -46,7 +46,8 @@
       </template>
     </el-table-column>
   </el-table>
-  <!--    分页插件    -->
+
+  <!--    Page Plugin    -->
   <div style="padding: 10px 0">
     <el-pagination
         @size-change="handleSizeChange"
@@ -59,26 +60,26 @@
     </el-pagination>
   </div>
 
-  <!-- 会话框 -->
-  <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%" >
-    <el-form label-width="80px" size="small">
-      <el-form-item label="用户名">
+  <!-- Edit dialog -->
+  <el-dialog title="Role Information" :visible.sync="dialogFormVisible" width="30%" >
+    <el-form label-width="100px" size="small">
+      <el-form-item label="Name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="唯一标识">
+      <el-form-item label="Flag">
         <el-input v-model="form.flag" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="描述">
+      <el-form-item label="Description">
         <el-input v-model="form.description" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
+      <el-button @click="dialogFormVisible = false">Cancel</el-button>
+      <el-button type="primary" @click="save">Confirm</el-button>
     </div>
   </el-dialog>
 
-<!--  菜单项打开 -->
+<!--  Menu dialog -->
   <el-dialog title="菜单分配" :visible.sync="menuDialogVis" width="30%">
     <el-tree
         :props="props"
@@ -93,8 +94,8 @@
          </span>
     </el-tree>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="menuDialogVis = false">取 消</el-button>
-      <el-button type="primary" @click="saveRoleMenu">确 定</el-button>
+      <el-button @click="menuDialogVis = false">Cancel</el-button>
+      <el-button type="primary" @click="saveRoleMenu">Confirm</el-button>
     </div>
   </el-dialog>
 

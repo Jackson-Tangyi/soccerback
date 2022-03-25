@@ -81,7 +81,9 @@
           <el-input v-model="form.age" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Sex">
-          <el-input v-model="form.sex" autocomplete="off"></el-input>
+          <el-select clearable v-model="form.sex" placeholder="请选择">
+            <el-option v-for="item in sexs" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="Phone">
           <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -121,7 +123,15 @@ export default {
       address: "",
       form: {},
       dialogFormVisible: false,
-      multipleSelection: []
+      multipleSelection: [],
+      sexs:[
+        {
+          value: 'Male',
+          label: 'Male'
+        }, {
+          value: 'Female',
+          label: 'Female'
+        }]
     }
   },
   created() {

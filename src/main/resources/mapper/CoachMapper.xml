@@ -20,11 +20,12 @@
             <result column="gameHomeAway" property="homeaway"/>
             <result column="gameScore" property="score"/>
             <result column="gamePlace" property="place"/>
+            <result column="gameType" property="type"/>
         </collection>
     </resultMap>
 
     <select id="findPage" resultMap="pageCoaches">
-        select club_coach.*,cg.name as gameName,cg.date as gameDate,cg.homeaway as gameHomeAway,cg.score as gameScore,cg.place as gamePlace from club_coach
+        select club_coach.*,cg.name as gameName,cg.date as gameDate,cg.homeaway as gameHomeAway,cg.score as gameScore,cg.place as gamePlace ,cg.type as gameType from club_coach
         left join club_game as cg
         on club_coach.cid=cg.coachid
         <where>

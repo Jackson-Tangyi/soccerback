@@ -36,6 +36,7 @@
       <el-table-column prop="doctor" label="Doctor" width="200"></el-table-column>
       <el-table-column prop="start" label="Start" width="150"></el-table-column>
       <el-table-column prop="end" label="End" width="150"></el-table-column>
+      <el-table-column prop="place" label="Place" width="150"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
       <el-table-column label="Operations"  width="200" align="center">
         <template slot-scope="scope">
@@ -71,23 +72,36 @@
     <el-dialog title="比赛信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="100px" size="small">
         <el-form-item label="Player">
-          <el-select clearable v-model="form.pnum" placeholder="请选择">
+          <el-select v-model="form.pnum" placeholder="请选择">
             <el-option v-for="item in players" :key="item.number" :label="item.name" :value="item.number"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Doctor">
-          <el-select clearable v-model="form.did" placeholder="请选择">
+          <el-select v-model="form.did" placeholder="请选择">
             <el-option v-for="item in doctors" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Start">
-          <el-input v-model="form.start" autocomplete="off"></el-input>
+          <template>
+            <el-date-picker
+                v-model="form.start"
+                type="date"
+                placeholder="选择日期时间"
+                align="right"
+            >
+            </el-date-picker>
+          </template>
         </el-form-item>
         <el-form-item label="End">
-          <el-input v-model="form.end" autocomplete="off"></el-input>
+          <el-input type="textarea" v-model="form.end" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Place">
+          <el-select v-model="form.place" placeholder="Select">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="Description">
-          <el-input v-model="form.description" autocomplete="off"></el-input>
+          <el-input type="textarea" v-model="form.description" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,7 +129,26 @@ export default {
       dialogFormVisible: false,
       multipleSelection: [],
       players:[],
-      doctors:[]
+      doctors:[],
+      options: [{
+        value: 'Feet',
+        label: 'Feet'
+      },{
+        value: 'Thigh',
+        label: 'Thigh'
+      },{
+        value: 'Abdomen',
+        label: 'Abdomen'
+      },{
+        value: 'Arm',
+        label: 'Arm'
+      },{
+        value: 'Back',
+        label: 'Back'
+      },{
+        value: 'Head',
+        label: 'Head'
+      }]
     }
   },
   created() {

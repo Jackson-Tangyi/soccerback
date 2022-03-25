@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -48,6 +50,9 @@ public class User implements Serializable {
 
       @ApiModelProperty("地址")
       private String address;
+
+      @ApiModelProperty("创建时间")
+      private Date createTime;
 
       @ApiModelProperty("照片URL")
       private String avatarUrl;

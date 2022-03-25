@@ -1,36 +1,44 @@
 <template>
-  <el-card style="width: 500px;">
-    <el-form label-width="80px" size="small">
-      <el-upload
-          class="avatar-uploader"
-          action="http://localhost:9090/file/upload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-      >
-        <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
+  <div class="center-in-center">
+        <el-card style="width: 500px;" >
+          <el-form label-width="80px" size="small">
+            <el-upload
+                class="avatar-uploader"
+                action="http://localhost:9090/file/upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+            >
+              <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
 
-      <el-form-item label="用户名">
-        <el-input v-model="form.username" disabled autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-input v-model="form.sex" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="年龄">
-        <el-input v-model="form.age" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="form.email" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="地址">
-        <el-input type="textarea" v-model="form.address" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="save">确 定</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+            <el-form-item label="Username">
+              <el-input v-model="form.username" disabled autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Sex">
+              <el-select v-model="form.sex" placeholder="请选择">
+                <el-option v-for="item in sexs" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Age">
+              <el-input v-model="form.age" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Email">
+              <el-input v-model="form.email" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Address">
+              <el-input type="textarea" v-model="form.address" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="save">确 定</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+
+  </div>
+
+
+
 </template>
 
 <script>
@@ -41,7 +49,15 @@ export default {
   data(){
       return{
         form:{},
-        user:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}
+        user:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{},
+        sexs:[
+          {
+            value: 'Male',
+            label: 'Male'
+          }, {
+            value: 'Female',
+            label: 'Female'
+          }]
       }
   },
   created(){
@@ -107,5 +123,16 @@ export default {
   width: 138px;
   height: 138px;
   display: block;
+}
+
+.center-in-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>

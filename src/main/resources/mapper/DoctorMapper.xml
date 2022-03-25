@@ -4,6 +4,7 @@
     <resultMap id="pageDoctor" type="com.felix.soccerback.entity.Doctor">
         <result column="id" property="id" />
         <result column="name" property="name" />
+        <result column="career" property="career" />
         <result column="age" property="age" />
         <result column="sex" property="sex" />
         <result column="description" property="description" />

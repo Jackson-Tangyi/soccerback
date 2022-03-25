@@ -8,7 +8,7 @@
   </div>
 
   <div style="margin: 10px 0">
-    <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+    <el-button type="primary" @click="handleAdd(null)">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
     <el-popconfirm
         class="ml-5"
         confirm-button-text='确定'
@@ -55,31 +55,31 @@
   </el-table>
 
   <!-- 会话框 -->
-  <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%" >
-    <el-form label-width="80px" size="small">
-      <el-form-item label="用户名">
+  <el-dialog title="Menu Information" :visible.sync="dialogFormVisible" width="30%" >
+    <el-form label-width="100px" size="small">
+      <el-form-item label="Name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="描述">
+      <el-form-item label="Path">
         <el-input v-model="form.path" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="页面路径">
+      <el-form-item label="Page Path">
         <el-input v-model="form.pagePath" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="图标">
-        <el-select clearable v-model="form.icon" placeholder="请选择" style="width: 100%">
+      <el-form-item label="Icon">
+        <el-select clearable v-model="form.icon" placeholder="Please Select" style="width: 100%">
           <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value">
             <i :class="item.value" /> {{ item.name }}
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="描述">
+      <el-form-item label="Description">
         <el-input v-model="form.description" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
+      <el-button @click="dialogFormVisible = false">Cancel</el-button>
+      <el-button type="primary" @click="save">Confirm</el-button>
     </div>
   </el-dialog>
 
@@ -135,9 +135,12 @@ export default {
         }
       })
     },
-    handleAdd(){//先打开然后再把值传进去
+    handleAdd(pid){//先打开然后再把值传进去
       this.dialogFormVisible=true
       this.form={}
+      if(pid){
+        this.form.pid=pid
+      }
     },
     handleEdit(row){//先传值再打开会话窗口
       this.form=row

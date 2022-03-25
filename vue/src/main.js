@@ -7,8 +7,19 @@ import store from './store'
 import './assets/gloable.css'
 import request from "@/utils/request";//使request变成全局，不用单独导入
 
+import locale from 'element-ui/lib/locale/lang/en';//element国际化组件
 
-Vue.use(ElementUI,{size:"small"})
+//引入视频组件
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
+
+// import VueCoreVideoPlayer from 'vue-core-video-player'
+// Vue.use(VueCoreVideoPlayer,{lang:'en'})
+
+
+Vue.use(ElementUI, {size:"small",locale})
 
 Vue.config.productionTip = false
 Vue.prototype.request=request

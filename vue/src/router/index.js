@@ -5,29 +5,6 @@ import store from "@/store";
 Vue.use(VueRouter)
 
 const routes = [
-  // {   静态路由改成动态路由
-  //   path: '/',
-  //   name: 'Layout',
-  //   component: ()=>import('../layout/Layout'),
-  //   redirect:'/login',
-  //   children:[
-  //     {path:'home',name:'HomePage',component:()=>import('../views/Home.vue')},
-  //     {path:'user',name: 'UserManage',component:()=>import('../views/User.vue')},
-  //     {path:'coach',name: 'CoachInfo',component:()=>import('../views/Coach.vue')},
-  //     {path:'game',name: 'GameInfo',component:()=>import('../views/Game.vue')},
-  //     {path:'player',name: 'PlayerInfo',component:()=>import('../views/Player.vue')},
-  //     {path:'person',name:'Person',component:()=>import('../views/Person.vue')},
-  //     {path:'doctor',name: 'Doctor',component:()=>import('../views/Doctor.vue')},
-  //     {path:'director',name: 'Director',component:()=>import('../views/Director.vue')},
-  //     {path:'cure',name:'Cure',component:()=>import('../views/Cure.vue')},
-  //     {path:'cureChart',name: 'CureChart',component:()=>import('../views/CureChart.vue')},
-  //     {path:'password',name: 'Password',component:()=>import('../views/Password.vue')},
-  //     {path: 'file',name: 'File',component:()=>import('../views/File.vue')},
-  //     {path: 'playerChart',name: 'PlayerChart',component:()=>import('../views/PlayerChart.vue')},
-  //     {path: 'role',name: 'Role',component:()=>import('../views/Role.vue')},
-  //     {path: 'menu',name: 'Menu',component:()=>import('../views/Menu.vue')}
-  //   ]
-  // },
   {
     path: '/404',
     name: '404',
@@ -40,6 +17,17 @@ const routes = [
     path: '/register',
     name: 'Register',
     component:()=>import('../views/Register.vue')
+  },{
+    path: '/front',
+    name: 'Front',
+    component:()=>import('../views/front/Front.vue'),
+    children:[
+      {path:'home',name:'FrontHome',component:()=>import('../views/front/Home.vue')},
+      {path:'video',name:'FrontVideo',component:()=>import('../views/front/Video.vue')},
+      {path:'videoDetail',name:'FrontVideoDetail',component:()=>import('../views/front/VideoDetail.vue')},
+      {path:'history',name:'FrontHistory',component:()=>import('../views/front/History.vue')},
+      {path:'members',name:'FrontMembers',component:()=>import('../views/front/Members.vue')},
+    ]
   }
 ]
 

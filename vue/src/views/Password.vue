@@ -1,21 +1,24 @@
 <template>
-  <el-card style="width: 500px;">
-    <el-form label-width="120px" size="small" :model="form" :rules="rules" ref="pass">
+  <div class="center-in-center">
+    <el-card style="width: 500px;">
+      <el-form label-width="150px" :model="form" :rules="rules" ref="pass">
 
-      <el-form-item label="原密码" prop="password">
-        <el-input v-model="form.password" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-        <el-input v-model="form.newPassword" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item label="确认新密码" prop="confirmPassword">
-        <el-input v-model="form.confirmPassword" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="save">确 定</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="form.password" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="New Password" prop="newPassword">
+          <el-input v-model="form.newPassword" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="Confirm Password" prop="confirmPassword">
+          <el-input v-model="form.confirmPassword" autocomplete="off" show-password></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="save">Save</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
+
 </template>
 
 <script>
@@ -68,5 +71,14 @@ export default {
 </script>
 
 <style scoped>
-
+.center-in-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 </style>

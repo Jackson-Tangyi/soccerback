@@ -1,6 +1,20 @@
 <template>
 <div>
-  <div id="line" style="width: 500px;height: 400px"></div>
+  <div>
+    <el-row :gutter="10" style="margin-bottom: 60px">
+      <el-col :span="12">
+        <el-card style="color: #409EFF">
+          <div id="line" style="width: 500px;height: 500px"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card style="color: #F56C6C">
+          <div id="pie" style="width: 500px;height: 500px;position: center"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+  </div>
 </div>
 </template>
 
@@ -16,14 +30,16 @@ export default {
     }
   },
   mounted() {
+
     var lineOption = {
       title: {
-        text: '各月伤病数量统计',
-        subtext: '趋势图',
+        text: 'Number of Injuries by Month',
+        subtext: '  ',
         left: 'center'
       },
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
       legend: {
         orient: 'vertical',
@@ -58,16 +74,81 @@ export default {
         }
       ]
     }
+
+    var pieOption = {
+      title: {
+        text: 'Injury Type Statistics',
+        subtext: '  ',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '5%',
+        left: 'center'
+      },
+      series: [
+        {
+          name: 'Injury Type',
+          type: 'pie',
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '40',
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: []
+        }
+      ]
+    };
+
     var lineDom = document.getElementById('line');
     var lineChart = echarts.init(lineDom);
 
-    request.get("/echarts/treatment").then(res=>{
-      console.log(res)
+    var pieDom = document.getElementById('pie');
+    var pieChart = echarts.init(pieDom);
+
+    request.get("/echarts/treatment/month").then(res=>{
       lineOption.series[0].data=res.data
       lineOption.series[1].data=res.data
 
       lineChart.setOption(lineOption);
     })
+
+
+    request.get("/echarts/treatment/type").then(res=>{
+      console.log(res)
+
+
+      pieOption.series[0].data=[
+        {value: res.data[0],name:'Feet'},
+        {value: res.data[1],name:'Thigh'},
+        {value: res.data[2],name:'Abdomen'},
+        {value: res.data[3],name:'Arm'},
+        {value: res.data[4],name:'Back'},
+        {value: res.data[5],name:'Head'}
+      ]
+      pieChart.setOption(pieOption);
+    })
+
+
+
 
   }
 }

@@ -6,7 +6,7 @@
       <span :class="collapseBtnClass" style="cursor: pointer;font-size: 18px" @click="collapse"></span>
 
       <el-breadcrumb separator="/" style="display: inline-block;margin-left: 10px">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">HomePage</el-breadcrumb-item>
         <el-breadcrumb-item>{{ currentPathName }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -21,13 +21,13 @@
 
       <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-          <router-link to="/password">修改密码</router-link>
+          <router-link to="/password">Change Password</router-link>
         </el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-          <router-link to="/person">个人信息</router-link>
+          <router-link to="/person">Personal Info</router-link>
         </el-dropdown-item>
-        <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-         <span style="text-decoration: none" @click="logout">退出</span>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0" divided>
+         <span style="text-decoration: none;color: red" @click="logout">Logout</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

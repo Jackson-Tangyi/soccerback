@@ -45,14 +45,14 @@ public class Cure implements Serializable {
       @DateTimeFormat(pattern = "yyyy-MM-dd")
       private Date start;
 
-      @ApiModelProperty("治疗结束日期")
-      @JsonFormat(pattern="yyyy-MM-dd")
-      @DateTimeFormat(pattern = "yyyy-MM-dd")
-      private Date end;
+      @ApiModelProperty("治疗持续日期")
+      private String end;
 
-      @ApiModelProperty("伤病名称")
+      @ApiModelProperty("伤病具体名称")
       private String description;
 
+      @ApiModelProperty("伤病部位")
+      private String place;
 
       @TableField(exist = false)
       private String player;

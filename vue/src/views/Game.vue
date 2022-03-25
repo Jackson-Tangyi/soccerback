@@ -33,11 +33,12 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
       <el-table-column prop="name" label="Name" width="180"></el-table-column>
-      <el-table-column prop="date" label="Date" width="200"></el-table-column>
+      <el-table-column prop="date" label="Date" width="150"></el-table-column>
       <el-table-column prop="homeaway" label="Home/Away" width="150"></el-table-column>
       <el-table-column prop="score" label="Score" width="150"></el-table-column>
       <el-table-column prop="place" label="Place"></el-table-column>
       <el-table-column prop="coach" label="Coach"></el-table-column>
+      <el-table-column prop="type" label="Type"></el-table-column>
       <el-table-column label="Operations"  width="200" align="center">
         <template slot-scope="scope">
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
@@ -91,6 +92,11 @@
         <el-form-item label="Place">
           <el-input v-model="form.place" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="Type">
+          <el-select clearable v-model="form.type" placeholder="请选择">
+            <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -116,7 +122,24 @@ export default {
       form: {},
       dialogFormVisible: false,
       multipleSelection: [],
-      coaches:[]
+      coaches:[],
+      types:[
+        {
+          value: '意大利杯',
+          label: '意大利杯'
+        }, {
+          value: '意大利联赛杯',
+          label: '意大利联赛杯'
+        },{
+          value: '意大利超级杯',
+          label: '意大利超级杯'
+        },{
+          value: '欧洲冠军杯',
+          label: '欧洲冠军杯'
+      }, {
+          value: '欧联杯',
+          label: '欧联杯'
+        }]
     }
   },
   created() {

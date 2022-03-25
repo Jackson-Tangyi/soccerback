@@ -50,6 +50,9 @@ public class Game implements Serializable {
 
       private String place;
 
+      @ApiModelProperty("比赛类型")
+      private String type;
+
       @TableField(exist = false)
       private String coach;
 

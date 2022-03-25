@@ -2,9 +2,12 @@ package com.felix.soccerback.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.Quarter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.felix.soccerback.common.Result;
 import com.felix.soccerback.entity.Cure;
 import com.felix.soccerback.entity.Player;
+import com.felix.soccerback.entity.User;
 import com.felix.soccerback.mapper.CureMapper;
 import com.felix.soccerback.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/echarts")
@@ -39,9 +40,9 @@ public class EchartsController {
 
     @Resource
     private IUserService userService;
-
-    @GetMapping("/treatment")
-    public Result treat(){
+// CureChart 各月伤病
+    @GetMapping("/treatment/month")
+    public Result monthTreat(){
         List<Cure> list=cureService.list();
         int arr[]=new int[12];
         for (int i = 0; i <arr.length ; i++) {
@@ -55,18 +56,72 @@ public class EchartsController {
         return Result.success(arr);
     }
 
-    @GetMapping("/members")
-    public Result members(){
+// CureChart 伤病分类
+    @GetMapping("/treatment/type")
+    public Result typeTreat(){
+        QueryWrapper<Cure> feetQuery=new QueryWrapper<>();
+        feetQuery.eq("place","Feet");
+        int feetCount = (int)cureService.count(feetQuery);
 
-        long c1 = playerService.count();
-        long c2 = coachService.count();
-        long c3 = doctorService.count();
-        long c4 = directorService.count();
-        long c5 = userService.count();
+        QueryWrapper<Cure> thighQuery=new QueryWrapper<>();
+        thighQuery.eq("place","Thigh");
+        int thighCount = (int)cureService.count(thighQuery);
 
-        return Result.success();
+        QueryWrapper<Cure> abdomenQuery=new QueryWrapper<>();
+        abdomenQuery.eq("place","Abdomen");
+        int abdomenCount = (int)cureService.count(abdomenQuery);
+
+        QueryWrapper<Cure> armQuery=new QueryWrapper<>();
+        armQuery.eq("place","Arm");
+        int armCount = (int)cureService.count(armQuery);
+
+        QueryWrapper<Cure> backQuery=new QueryWrapper<>();
+        backQuery.eq("place","Back");
+        int backCount = (int)cureService.count(backQuery);
+
+        QueryWrapper<Cure> headQuery=new QueryWrapper<>();
+        headQuery.eq("place","Head");
+        int headCount = (int)cureService.count(headQuery);
+
+        return Result.success(CollUtil.newArrayList(feetCount,thighCount,abdomenCount,armCount,backCount,headCount));
     }
 
+
+//UserChart 用户注册
+    @GetMapping("/create/user")
+    public Result CreateCount() {
+        List<User> list = userService.list();
+        int q1 = 0; // 第一季度
+        int q2 = 0; // 第二季度
+        int q3 = 0; // 第三季度
+        int q4 = 0; // 第四季度
+        for (User user : list) {
+            Date createTime = user.getCreateTime();
+            Quarter quarter = DateUtil.quarterEnum(createTime);
+            switch (quarter) {
+                case Q1: q1 += 1; break;
+                case Q2: q2 += 1; break;
+                case Q3: q3 += 1; break;
+                case Q4: q4 += 1; break;
+                default: break;
+            }
+        }
+        return Result.success(CollUtil.newArrayList(q1, q2, q3, q4));
+    }
+//UserChart 性别比例
+    @GetMapping("/count/user")
+    public Result countMembers(){
+        QueryWrapper<User> queryWrapper0=new QueryWrapper<User>();
+        queryWrapper0.eq("sex","Female");
+
+        QueryWrapper<User> queryWrapper1=new QueryWrapper<User>();
+        queryWrapper1.eq("sex","Male");
+        int count0 = (int) userService.count(queryWrapper0);
+        int count1 = (int) userService.count(queryWrapper1);
+
+        return Result.success(CollUtil.newArrayList(count0,count1));
+    }
+//PlayerChart 雷达图
     @GetMapping("/radar/{val}")
     public Result findRadar(@PathVariable Integer val) {
         Player player = playerService.getById(val);
