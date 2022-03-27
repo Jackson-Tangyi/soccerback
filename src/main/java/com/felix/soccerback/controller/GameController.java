@@ -62,6 +62,11 @@ public class GameController {
         return Result.success(gameService.list());
     }
 
+    @GetMapping("/findAllGames")
+    public Result findAllGames() {
+        return Result.success(gameService.list());
+    }
+
     @GetMapping("/{id}")
     public Result findOne(@PathVariable Integer id) {
         return Result.success(gameService.getById(id));

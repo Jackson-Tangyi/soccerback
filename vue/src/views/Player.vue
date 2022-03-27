@@ -4,8 +4,9 @@
 <!--  搜索窗口  -->
     <div style="margin: 10px 0">
       <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name" ></el-input>
-      <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
+      <el-button class="ml-5" icon="el-icon-search" type="warning" circle @click="load"></el-button>
       <el-button type="primary" @click="reset" round>Reset</el-button>
+      <el-button type="success" @click="compare" round>Compare ability</el-button>
     </div>
 <!-- 新增、批量删除、导入、导出 -->
     <div style="margin: 10px 0">
@@ -19,7 +20,7 @@
           title="Confirm deletion？"
           @confirm="delBatch"
       >
-        <el-button type="danger" slot="reference" round>Batch delete <i class="el-icon-remove-outline"></i></el-button>
+        <el-button type="danger" slot="reference" round>Batch deletion <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
       <el-upload action="http://localhost:9090/player/import"
                  :show-file-list="false"
@@ -57,7 +58,9 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
       <el-table-column prop="name" label="Name" ></el-table-column>
-      <el-table-column prop="area" label="Area" width="100"></el-table-column>
+      <el-table-column prop="area" label="Area" ></el-table-column>
+      <el-table-column prop="goal" label="Goal" ></el-table-column>
+      <el-table-column prop="assist" label="Assist" ></el-table-column>
       <el-table-column label="Image" >
         <template #default="scope">
           <el-image
@@ -101,7 +104,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[5, 10, 15]"
+          :page-sizes="[10, 15 ,20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -187,22 +190,46 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row>
-          <el-form-item label="Area" label-width="120px">
-            <el-select v-model="form.area" placeholder="Select">
-              <el-option-group
-                  v-for="area in options"
-                  :key="area.label"
-                  :label="area.label">
-                <el-option
-                    v-for="item in area.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-option-group>
-            </el-select>
-          </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="Goal" label-width="120px">
+              <el-input-number v-model="form.goal" :min="0" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Assist" label-width="120px">
+              <el-input-number v-model="form.assist" :min="0" :max="100"></el-input-number>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Area" label-width="120px">
+              <el-select v-model="form.area" placeholder="Select">
+                <el-option-group
+                    v-for="area in options"
+                    :key="area.label"
+                    :label="area.label">
+                  <el-option
+                      v-for="item in area.options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-option-group>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Flag">
+              <el-select v-model="form.flag" placeholder="Select">
+                <el-option v-for="item in flags" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
         </el-row>
 
         <el-row>
@@ -235,10 +262,16 @@
       </el-table>
     </el-dialog>
 
-<!-- 球员能力值雷达图展示 -->
-    <el-dialog :visible.sync="radarVisible" v-el-drag-dialog>
-      <div id="main" style="width: 400px; height: 400px"></div>
+    <!-- 球员能力值雷达图展示 -->
+    <el-dialog :visible.sync="radarVisible" v-el-drag-dialog width="30%">
+      <div id="main" style="width: 500px; height: 500px"></div>
     </el-dialog>
+
+
+<!--    &lt;!&ndash; 球员能力值对比雷达图展示 &ndash;&gt;-->
+<!--    <el-dialog :visible.sync="compareVisible" v-el-drag-dialog>-->
+<!--      <div id="compare" style="width: 400px; height: 400px"></div>-->
+<!--    </el-dialog>-->
 
   </div>
 </template>
@@ -259,12 +292,13 @@ export default {
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 5,
+      pageSize: 10,
       name: "",
       form: {},
       dialogFormVisible: false,
       radarVisible:false,
       treatmentVis:false,
+      compareVisible:false,
       multipleSelection: [],
       treatments:[],
       options: [{
@@ -321,7 +355,22 @@ export default {
           value: 'Goal Keeper',//门将
           label: 'GK'
         }]
-      }]
+      }],
+      flags:[
+        {
+          value: 'Forward',
+          label: 'Forward'
+        }, {
+          value: 'Midfielder',
+          label: 'Midfielder'
+        },{
+          value: 'Defender',
+          label: 'Defender'
+        }, {
+          value: 'Goalkeeper',
+          label: 'Goalkeeper'
+        }
+      ]
     }
   },
   created() {
@@ -339,11 +388,11 @@ export default {
         },
         legend: {
           bottom:5,
-          data: ['Allocated Budget']
+          data: ['']
         },
         radar: {
           axisName:{
-            color:'rgb(255,0,0)'
+            color:'rgb(120,0,0)'
           },
           indicator: [
             { name: 'Speed', max: 100 },
@@ -358,7 +407,7 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: 'rgba(238, 197, 102, 1.5)'
+              color: 'rgba(238, 197, 102, 3.0)'
             }
           }
         },
@@ -369,7 +418,7 @@ export default {
             data: [
               {
                 value: [],
-                name: 'Allocated Budget'
+                name: ''
               }
             ],
             label:{
@@ -382,10 +431,82 @@ export default {
       };
 
       request.get("/echarts/radar/ "+val).then(res=>{
-        option.series[0].data[0]=res.data
+        console.log(res.data[0])
+        option.legend.data=[res.data[0]]
+        option.series[0].data[0].value=res.data.splice(1)
+        option.series[0].data[0].name=res.data[0]
         option && myChart.setOption(option);
       })
 
+    },
+    displayCompare(idc){
+      var chartDom = document.getElementById('main');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: 'Ability Display'
+        },
+        legend: {
+          bottom:5,
+          data: []
+        },
+        radar: {
+          axisName:{
+            color:'rgb(120,0,0)'
+          },
+          indicator: [
+            { name: 'Speed', max: 100 },
+            { name: 'Power', max: 100 },
+            { name: 'defence', max: 100 },
+            { name: 'dribbling', max: 100 },
+            { name: 'pass', max: 100 },
+            { name: 'shot', max: 100 }
+          ],
+          splitArea: {
+            show: true
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(238, 197, 102, 3.0)'
+            }
+          }
+        },
+        series: [
+          {
+            name: 'Budget vs spending',
+            type: 'radar',
+            data: [
+              {
+                value: [],
+                name: ''
+              },
+              {
+                value: [],
+                name: ''
+              }
+            ],
+            label:{
+              normal:{
+                show:true
+              }
+            }
+          }
+        ]
+      };
+
+      request.post("/echarts/compare",idc).then(res=>{
+        console.log(res)
+        option.legend.data=[res.data[0][0],res.data[1][0]]
+
+        option.series[0].data[0].value=res.data[0].splice(1)
+        option.series[0].data[0].name=res.data[0][0]
+
+        option.series[0].data[1].value=res.data[1].splice(1)
+        option.series[0].data[1].name=res.data[1][0]
+        option && myChart.setOption(option);
+      })
     },
     load(){
       request.get("/player/page",{
@@ -455,6 +576,17 @@ export default {
         }
       })
     },
+    compare(){
+      let idc=this.multipleSelection.map(v=>v.id)// [{}, {}, {}] => [1,2,3] 把一个对象的数组转成一个纯id的数组
+      if(idc.length === 2){
+        this.radarVisible=true
+        setTimeout(()=>{
+          this.displayCompare(idc)
+        },300)
+      }else {
+        this.$message.error("Choose two players!!!")
+      }
+    },
     reset(){
       this.name=""
       this.load()
@@ -488,7 +620,7 @@ export default {
       this.$message.success("Import successfully")
       this.load()
     },
-    filesUploadSuccess(res){
+    filesUploadSuccess(res){//照片上传
       console.log(res)
       this.form.image=res
     }

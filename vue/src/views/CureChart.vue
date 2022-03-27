@@ -4,12 +4,12 @@
     <el-row :gutter="10" style="margin-bottom: 60px">
       <el-col :span="12">
         <el-card style="color: #409EFF">
-          <div id="line" style="width: 500px;height: 500px"></div>
+          <div id="line" style="width: 700px;height: 500px"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card style="color: #F56C6C">
-          <div id="pie" style="width: 500px;height: 500px;position: center"></div>
+          <div id="pie" style="width: 700px;height: 500px;position: center"></div>
         </el-card>
       </el-col>
     </el-row>

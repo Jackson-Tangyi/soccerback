@@ -11,10 +11,7 @@ import com.felix.soccerback.entity.User;
 import com.felix.soccerback.mapper.CureMapper;
 import com.felix.soccerback.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -125,12 +122,31 @@ public class EchartsController {
     @GetMapping("/radar/{val}")
     public Result findRadar(@PathVariable Integer val) {
         Player player = playerService.getById(val);
+        String name= player.getName();
         int speed= player.getSpeed();
         int power= player.getPower();
         int defence=player.getDefence();
         int dribbling=player.getDribbling();
         int pass= player.getPass();
         int shot=player.getShot();
-        return Result.success(CollUtil.newArrayList(speed,power,defence,dribbling,pass,shot));
+        return Result.success(CollUtil.newArrayList(name,speed,power,defence,dribbling,pass,shot));
     }
+
+//球员对比 雷达图
+    @PostMapping("/compare")
+    public Result Compare(@RequestBody List<Integer> ids) {
+        List<Player> players = playerService.listByIds(ids);
+        ArrayList<ArrayList<Object>> arrayList=new ArrayList<>();
+        for (Player player : players) {
+            String name= player.getName();
+            int speed= player.getSpeed();
+            int power= player.getPower();
+            int defence=player.getDefence();
+            int dribbling=player.getDribbling();
+            int pass= player.getPass();
+            int shot=player.getShot();
+            arrayList.add(CollUtil.newArrayList(name,speed, power, defence, dribbling, pass, shot));
+        }
+        return Result.success(arrayList);
+}
 }

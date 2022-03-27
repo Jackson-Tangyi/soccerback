@@ -13,24 +13,24 @@
             </el-upload>
 
             <el-form-item label="Username">
-              <el-input v-model="form.username" disabled autocomplete="off"></el-input>
+              <el-input v-model="form.username" disabled autocomplete="off" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="Sex">
-              <el-select v-model="form.sex" placeholder="请选择">
+              <el-select v-model="form.sex" placeholder="Select">
                 <el-option v-for="item in sexs" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Age">
-              <el-input v-model="form.age" autocomplete="off"></el-input>
+              <el-input-number v-model="form.age" :min="1" :max="120"></el-input-number>
             </el-form-item>
             <el-form-item label="Email">
-              <el-input v-model="form.email" autocomplete="off"></el-input>
+              <el-input prefix-icon="el-icon-position" v-model="form.email" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Address">
               <el-input type="textarea" v-model="form.address" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="save">确 定</el-button>
+              <el-button type="primary" @click="save">Save</el-button>
             </el-form-item>
           </el-form>
         </el-card>

@@ -27,6 +27,10 @@ const routes = [
       {path:'videoDetail',name:'FrontVideoDetail',component:()=>import('../views/front/VideoDetail.vue')},
       {path:'history',name:'FrontHistory',component:()=>import('../views/front/History.vue')},
       {path:'members',name:'FrontMembers',component:()=>import('../views/front/Members.vue')},
+      {path:'frontPlayer',name:'FrontPlayer',component:()=>import('../views/front/FrontPlayer.vue')},
+      {path:'frontCoach',name:'FrontCoach',component:()=>import('../views/front/FrontCoach.vue')},
+      {path:'achievement',name:'FrontAchievement',component:()=>import('../views/front/FrontAchievement.vue')},
+      {path:'frontGame',name:'FrontGame',component:()=>import('../views/front/FrontGame.vue')},
     ]
   }
 ]
@@ -97,6 +101,7 @@ router.beforeEach((to, from, next) => {
       next("/login")
     }
   }
+
   // 其他的情况都放行
   next()
 })

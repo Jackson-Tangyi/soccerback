@@ -1,6 +1,6 @@
 <template>
   <el-menu :default-openeds="opens" style="min-height: 100%; overflow-x: hidden"
-           background-color="rgb(48, 65, 86)"
+           background-color="black"
            text-color="#fff"
            active-text-color="#ffd04b"
            :collapse-transition="false"
@@ -8,8 +8,8 @@
            router
   >
     <div style="height: 60px; line-height: 60px; text-align: center">
-      <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px; margin-right: 5px">
-      <b style="color: white; margin-left: 5px" v-show="logoTextShow">Info-System</b>
+      <img src="../assets/lg.png" alt="" style="width: 40px; position: relative; top: 5px; margin-right: 5px">
+      <b style="color: white; margin-left: 5px" v-show="logoTextShow">JUVENTUS</b>
     </div>
 
     <div v-for="item in menus" :key="item.id">

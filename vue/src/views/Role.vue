@@ -2,23 +2,23 @@
 <!-- 加不加div取决于整个页面 只能有一个根div 去包含所有 -->
 <div>
   <div style="margin: 10px 0">
-    <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name" ></el-input>
-    <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-    <el-button type="warning" @click="reset">重置</el-button>
+    <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name" ></el-input>
+    <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
+    <el-button type="primary" @click="reset" round>Reset</el-button>
   </div>
 
   <div style="margin: 10px 0">
-    <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+    <el-button type="primary" @click="handleAdd" round>Add <i class="el-icon-circle-plus-outline"></i></el-button>
     <el-popconfirm
         class="ml-5"
-        confirm-button-text='确定'
-        cancel-button-text='我再想想'
+        confirm-button-text='Confirm'
+        cancel-button-text='Rethink'
         icon="el-icon-info"
         icon-color="red"
-        title="您确定批量删除这些数据吗？"
+        title="Confirm deletion？"
         @confirm="delBatch"
     >
-      <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
+      <el-button type="danger" slot="reference" round>Batch deletion <i class="el-icon-remove-outline"></i></el-button>
     </el-popconfirm>
   </div>
 
@@ -30,18 +30,18 @@
     <el-table-column prop="flag" label="Flag" ></el-table-column>
     <el-table-column label="Operations"  width="300" align="center">
       <template slot-scope="scope">
-        <el-button type="info" @click="selectMenu(scope.row)">分配菜单 <i class="el-icon-menu"></i></el-button>
-        <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
+        <el-button type="info" @click="selectMenu(scope.row)" round>Assign menu <i class="el-icon-menu"></i></el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)" circle></el-button>
         <el-popconfirm
             class="ml-5"
-            confirm-button-text='确定'
-            cancel-button-text='我再想想'
+            confirm-button-text='Confirm'
+            cancel-button-text='Rethink'
             icon="el-icon-info"
             icon-color="red"
-            title="您确定删除吗？"
+            title="Confirm deletion？"
             @confirm="del(scope.row.id)"
         >
-          <el-button type="danger" slot="reference">删除 <i class="el-icon-remove-outline"></i></el-button>
+          <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
         </el-popconfirm>
       </template>
     </el-table-column>
@@ -64,13 +64,13 @@
   <el-dialog title="Role Information" :visible.sync="dialogFormVisible" width="30%" >
     <el-form label-width="100px" size="small">
       <el-form-item label="Name">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-input v-model="form.name" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Flag">
-        <el-input v-model="form.flag" autocomplete="off"></el-input>
+        <el-input v-model="form.flag" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Description">
-        <el-input v-model="form.description" autocomplete="off"></el-input>
+        <el-input type="textarea" v-model="form.description" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -80,7 +80,7 @@
   </el-dialog>
 
 <!--  Menu dialog -->
-  <el-dialog title="菜单分配" :visible.sync="menuDialogVis" width="30%">
+  <el-dialog title="Assign Menu" :visible.sync="menuDialogVis" width="30%">
     <el-tree
         :props="props"
         :data="menuData"
@@ -159,18 +159,18 @@ export default {
     save(){//会话框
       request.post("/role",this.form).then(res=>{
         if(res.code === '200'){
-          this.$message.success("保存成功")
+          this.$message.success("Save successfully")
           this.dialogFormVisible=false
           this.load()
         }else {
-          this.$message.error("保存失败")
+          this.$message.error("Save failed")
         }
       })
     },
     saveRoleMenu() {
       this.request.post("/role/roleMenu/" + this.roleId, this.$refs.tree.getCheckedKeys()).then(res => {
         if (res.code === '200') {
-          this.$message.success("绑定成功")
+          this.$message.success("Bind succeeded")
           this.menuDialogVis = false
 
           // 管理员角色修改页面后需要重新登录
@@ -224,10 +224,10 @@ export default {
     del(id){//删除某一个
       request.delete("/role/"+id).then(res=>{
         if(res.code === '200'){
-          this.$message.success("删除成功")
+          this.$message.success("Delete successfully")
           this.load()
         }else{
-          this.$message.error("删除失败")
+          this.$message.error("Delete failed")
         }
       })
     },

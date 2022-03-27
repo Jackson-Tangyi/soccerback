@@ -22,16 +22,23 @@
               active-text-color="#ffd04b">
             <el-menu-item index="/front/home" style="width: 150px;padding-left: 60px">Home</el-menu-item>
             <el-menu-item index="/front/video" style="width: 150px;padding-left: 60px">Video</el-menu-item>
+            <el-menu-item index="/front/frontGame" style="width: 220px;padding-left: 60px">Game Schedule</el-menu-item>
             <el-submenu index="1" style="width: 150px;padding-left: 60px">
               <template slot="title">Club</template>
               <el-menu-item index="/front/history" >
                         History
               </el-menu-item>
+              <el-menu-item index="/front/achievement" >
+                        Achievement
+              </el-menu-item>
             </el-submenu>
             <el-submenu index="2" style="width: 200px;padding-left: 60px">
               <template slot="title">About Team</template>
-              <el-menu-item index="/front/members" >
-                Team members
+              <el-menu-item index="/front/frontPlayer" >
+                Player
+              </el-menu-item>
+              <el-menu-item index="/front/frontCoach" >
+                Coach
               </el-menu-item>
             </el-submenu>
             <el-menu-item index="../login" style="float: right;padding-left: 40px">
@@ -60,6 +67,7 @@ export default {
 }
 .el-main{
   text-align: center;
+  background-image: linear-gradient(to right bottom , blanchedalmond,whitesmoke);
 }
 .login_text:hover{
   color: #409EFF;

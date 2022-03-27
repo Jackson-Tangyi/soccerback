@@ -14,8 +14,7 @@
     <!--    cursor: pointer 鼠标上去变成一个小手形状    -->
     <el-dropdown style="width: 150px; cursor: pointer;text-align: right">
       <div style="display: inline-block">
-        <img :src="user.avatarUrl" alt=""
-             style="width: 30px;border-radius: 50%;position: relative;top:10px;right: 5px"/>
+       <img :src="user.avatarUrl" alt="" style="width: 30px;border-radius: 50%;position: relative;top:10px;right: 5px"/>
         <span>{{ user.username }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
       </div>
 

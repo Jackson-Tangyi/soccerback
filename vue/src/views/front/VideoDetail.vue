@@ -59,7 +59,7 @@ export default {
   created() {
     let id=this.$route.query.id
     console.log(id)
-    request.get("/file/video/"+id).then(res=>{
+    request.get("/front/video/"+id).then(res=>{
       console.log(res.data.url)
       this.playerOptions.sources[0].src=res.data.url
 

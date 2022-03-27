@@ -12,6 +12,7 @@
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
         <result column="address" property="address"/>
+        <result column="image" property="image"/>
         <result column="cid" property="cid"/>
         <collection property="games" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Game">
 <!--        column 指的是查询出来的结果的我设置的名字  property 指的是对应表里面字段的名字    -->

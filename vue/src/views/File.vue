@@ -1,25 +1,25 @@
 <template>
   <div>
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-      <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
+      <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name"></el-input>
+      <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
+      <el-button type="primary" @click="reset" round>Reset</el-button>
     </div>
     <div style="margin: 10px 0">
       <el-upload action="http://localhost:9090/file/upload" :show-file-list="false"
                  :on-success="handleFileUploadSuccess" style="display: inline-block">
-        <el-button type="primary" class="ml-5">上传文件 <i class="el-icon-top"></i></el-button>
+        <el-button type="primary" class="ml-5" round>Upload File<i class="el-icon-top"></i></el-button>
       </el-upload>
       <el-popconfirm
           class="ml-5"
-          confirm-button-text='确定'
-          cancel-button-text='我再想想'
+          confirm-button-text='Confirm'
+          cancel-button-text='Rethink'
           icon="el-icon-info"
           icon-color="red"
-          title="您确定批量删除这些数据吗？"
+          title="Confirm deletion？"
           @confirm="delBatch"
       >
-        <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
+        <el-button type="danger" slot="reference" round>Batch deletion <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
 
     </div>
@@ -27,37 +27,37 @@
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
-      <el-table-column prop="name" label="文件名称"></el-table-column>
-      <el-table-column prop="type" label="文件类型"></el-table-column>
-      <el-table-column prop="size" label="文件大小(kb)"></el-table-column>
-      <el-table-column label="预览">
+      <el-table-column prop="name" label="Name"></el-table-column>
+      <el-table-column prop="type" label="Type"></el-table-column>
+      <el-table-column prop="size" label="Size(kb)"></el-table-column>
+      <el-table-column label="Preview">
         <template slot-scope="scope">
-          <el-button type="primary" @click="preview(scope.row.url)">预览</el-button>
+          <el-button type="primary" @click="preview(scope.row.url)" round>Preview</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="下载">
+      <el-table-column label="Download">
         <template slot-scope="scope">
-          <el-button type="primary" @click="download(scope.row.url)">下载</el-button>
+          <el-button type="primary" @click="download(scope.row.url)" round>Download</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="启用">
+      <el-table-column label="Enable">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.enable" active-color="#13ce66" inactive-color="#ccc"
                      @change="changeEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="Operations" align="center">
         <template slot-scope="scope">
           <el-popconfirm
               class="ml-5"
-              confirm-button-text='确定'
-              cancel-button-text='我再想想'
+              confirm-button-text='Confirm'
+              cancel-button-text='Rethink'
               icon="el-icon-info"
               icon-color="red"
-              title="您确定删除吗？"
+              title="Confirm deletion？"
               @confirm="del(scope.row.id)"
           >
-            <el-button type="danger" slot="reference">删除 <i class="el-icon-remove-outline"></i></el-button>
+            <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -68,7 +68,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[5, 8, 10, 15]"
+          :page-sizes="[5, 10, 15]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -112,17 +112,17 @@ export default {
     changeEnable(row) {
       this.request.post("/file/update", row).then(res => {
         if (res.code === '200') {
-          this.$message.success("操作成功")
+          this.$message.success("Update Successfully")
         }
       })
     },
     del(id) {
       this.request.delete("/file/" + id).then(res => {
         if (res.code === '200') {
-          this.$message.success("删除成功")
+          this.$message.success("Delete successfully")
           this.load()
         } else {
-          this.$message.error("删除失败")
+          this.$message.error("Delete failed")
         }
       })
     },
@@ -134,10 +134,10 @@ export default {
       let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
       this.request.post("/file/del/batch", ids).then(res => {
         if (res.code === '200') {
-          this.$message.success("批量删除成功")
+          this.$message.success("Batch deletion successfully")
           this.load()
         } else {
-          this.$message.error("批量删除失败")
+          this.$message.error("Batch delete failed")
         }
       })
     },
@@ -157,7 +157,7 @@ export default {
     },
     handleFileUploadSuccess(res) {
       console.log(res)
-      this.$message.success("上传成功")
+      this.$message.success("Import successfully")
       this.load()
     },
     download(url) {

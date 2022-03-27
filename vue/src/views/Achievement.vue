@@ -1,12 +1,12 @@
 <template>
   <div>
-<!--   搜索、重置 -->
+    <!--   搜索、重置 -->
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="Input content" suffix-icon="el-icon-search" v-model="content" ></el-input>
+      <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name" ></el-input>
       <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
       <el-button type="primary" @click="reset" round>Reset</el-button>
     </div>
-<!--   新增、批量删除 -->
+    <!--   新增、批量删除 -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="handleAdd">Add <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
@@ -25,16 +25,14 @@
     <el-table :data="tableData" stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="createTime" label="Create Time" ></el-table-column>
-      <el-table-column prop="icon" label="Icon" ></el-table-column>
-      <el-table-column prop="color" label="Color" ></el-table-column>
-      <el-table-column prop="content" label="Content"></el-table-column>
-      <el-table-column prop="url" label="ImageURL">
+      <el-table-column prop="name" label="Name" ></el-table-column>
+      <el-table-column prop="season" label="Season" ></el-table-column>
+      <el-table-column prop="image" label="Image">
         <template #default="scope">
           <el-image
               style="width: 50px; height: 50px"
-              :src="scope.row.url"
-              :preview-src-list="[scope.row.url]">
+              :src="scope.row.image"
+              :preview-src-list="[scope.row.image]">
           </el-image>
         </template>
       </el-table-column>
@@ -70,35 +68,15 @@
     </div>
 
     <!-- 编辑框 -->
-    <el-dialog title="History Information" :visible.sync="dialogFormVisible" width="30%" >
+    <el-dialog title="Achievement Information" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="100px" size="small">
-        <el-form-item label="CreateTime">
-          <template>
-            <el-date-picker
-                v-model="form.createTime"
-                type="date"
-                placeholder="Select Date"
-                align="right"
-            >
-            </el-date-picker>
-          </template>
-        </el-form-item>
-        <el-form-item label="Icon">
-          <el-select clearable v-model="form.icon" placeholder="Please Select" style="width: 100%">
-            <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value">
-              <i :class="item.value" /> {{ item.name }}
-            </el-option>
+        <el-form-item label="Name">
+          <el-select v-model="form.name" placeholder="Select">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="Color">
-          <el-color-picker
-              v-model="form.color"
-              show-alpha
-              :predefine="predefineColors">
-          </el-color-picker>
-        </el-form-item>
-        <el-form-item label="Content">
-          <el-input type="textarea" v-model="form.content" autocomplete="off"></el-input>
+        <el-form-item label="Season">
+          <el-input v-model="form.season" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Image">
           <el-upload
@@ -123,49 +101,49 @@
 import request from "@/utils/request";
 
 export default {
-  name: "HistoryBack",
+  name: "Achievement",
   data(){
     return{
       tableData: [],
       total: 0,
       pageNum: 1,
       pageSize: 5,
-      content: "",
+      name: "",
       form: {},
       dialogFormVisible: false,
       multipleSelection: [],
-      options:[],
-      predefineColors: [
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577'
-      ],
-
-
+      options:[
+        {
+          value: 'Italian Cup Champion',
+          label: 'Italian Cup Champion'
+        }, {
+          value: 'Italian Super Cup Champion',
+          label: 'Italian Super Cup Champion'
+        },{
+          value: 'European Championship Cup Champion',
+          label: 'European Championship Cup Champion'
+        }, {
+          value: 'Intercontinental Cup Champion',
+          label: 'Intercontinental Cup Champion'
+        }, {
+          value: 'Club World Cup Champion',
+          label: 'Club World Cup Champion'
+        }, {
+          value: 'Italian League Cup Champion',
+          label: 'Italian League Cup Champion'
+        }],
     }
   },
   created() {
-    //请求分页数据
     this.load()
   },
   methods: {
     load() {
-      request.get("/history/page", {
+      request.get("/achievement/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          content: this.content
+          name: this.name
         }
       }).then(res => {
             console.log(res)
@@ -173,14 +151,9 @@ export default {
             this.total = res.data.total
           }
       )
-
-      request.get("/menu/icons").then(res=>{
-        this.options=res.data
-      })
-
     },
     save() {//会话框
-      request.post("/history", this.form).then(res => {
+      request.post("/achievement", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("Save successfully")
           this.dialogFormVisible = false
@@ -203,7 +176,7 @@ export default {
       this.multipleSelection = val
     },
     del(id) {//删除某一个
-      request.delete("/history/" + id).then(res => {
+      request.delete("/achievement/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("Delete successfully")
           this.load()
@@ -214,7 +187,7 @@ export default {
     },
     delBatch() {
       let ids = this.multipleSelection.map(v => v.id)// [{}, {}, {}] => [1,2,3] 把一个对象的数组转成一个纯id的数组
-      request.post("/history/del/batch/", ids).then(res => {
+      request.post("/achievement/del/batch/", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("Batch deletion successfully")
           this.load()
@@ -249,9 +222,9 @@ export default {
       this.pageNum = pageNum
       this.load()
     },
-    filesUploadSuccess(res){
+    filesUploadSuccess(res){//照片上传
       console.log(res)
-      this.form.url=res
+      this.form.image=res
     }
   }
 }

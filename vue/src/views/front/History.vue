@@ -8,12 +8,13 @@
               :icon="activity.icon"
               :type="activity.type"
               :color="activity.color"
+              size="large"
               :timestamp="activity.createTime">
             <el-card style="min-height: 200px">
               <el-col :span="12">
                 <template>
                   <el-image
-                      style="width: 400px; height: 400px"
+                      style="width: 600px; height: 400px"
                       :src="activity.url"
                       :preview-src-list="[activity.url]">
                   </el-image>
@@ -22,7 +23,7 @@
               </el-col>
 
               <el-col :span="12">
-                {{activity.content}}
+                <p style="font-size: 20px">{{activity.content}}</p>
               </el-col>
             </el-card>
           </el-timeline-item>
@@ -49,7 +50,7 @@ export default {
   },
   methods:{
     load(){
-      request.get("/history/findAll").then(res=>{
+      request.get("/front/findAll").then(res=>{
           console.log(res)
         this.activities=res.data
       })

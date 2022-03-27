@@ -50,6 +50,8 @@ public class Coach implements Serializable {
 
       private String address;
 
+      private String image;
+
       private int cid;//外键
 
       @TableField(exist = false)

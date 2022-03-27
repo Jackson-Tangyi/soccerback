@@ -24,7 +24,7 @@ export default {
   },
   methods:{
     load(){
-      request.get("/file/videos").then(res=>{
+      request.get("/front/videos").then(res=>{
         console.log(res)
         this.videos=res.data
       })

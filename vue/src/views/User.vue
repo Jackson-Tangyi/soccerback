@@ -13,32 +13,32 @@
     <el-button type="primary" @click="handleAdd" >Add<i class="el-icon-circle-plus-outline"></i></el-button>
     <el-popconfirm
         class="ml-5"
-        confirm-button-text='确定'
-        cancel-button-text='我再想想'
+        confirm-button-text='Confirm'
+        cancel-button-text='Rethink'
         icon="el-icon-info"
         icon-color="red"
-        title="您确定批量删除这些数据吗？"
+        title="Confirm deletion？"
         @confirm="delBatch"
     >
-      <el-button type="danger" slot="reference">Batch Delete <i class="el-icon-remove-outline"></i></el-button>
+      <el-button type="danger" slot="reference">Batch Deletion <i class="el-icon-remove-outline"></i></el-button>
     </el-popconfirm>
     <el-upload action="http://localhost:9090/user/import"
                :show-file-list="false"
                accept="xlsx"
                :on-success="handleExcelImportSuccess"
                 style="display: inline-block">
-      <el-button type="primary" class="ml-5">Import <i class="el-icon-bottom"></i></el-button>
+      <el-button type="success" class="ml-5" round>Import <i class="el-icon-bottom"></i></el-button>
     </el-upload>
-    <el-button type="primary" @click="exp" class="ml-5">Export <i class="el-icon-top"></i></el-button>
+    <el-button type="info" @click="exp" class="ml-5" round>Export <i class="el-icon-top"></i></el-button>
   </div>
 
-  <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
+  <el-table :data="tableData" stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="55"></el-table-column>
     <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-    <el-table-column prop="username" label="Username" width="140"></el-table-column>
-    <el-table-column prop="age" label="Age" width="80" sortable></el-table-column>
-    <el-table-column prop="sex" label="Sex" width="80"></el-table-column>
-    <el-table-column prop="email" label="Email" width="120"></el-table-column>
+    <el-table-column prop="username" label="Username" ></el-table-column>
+    <el-table-column prop="age" label="Age"  sortable></el-table-column>
+    <el-table-column prop="sex" label="Sex" ></el-table-column>
+    <el-table-column prop="email" label="Email" ></el-table-column>
     <el-table-column prop="address" label="Address"></el-table-column>
     <el-table-column prop="role" label="Role">
       <template slot-scope="scope">
@@ -81,21 +81,21 @@
   <el-dialog title="User Information" :visible.sync="dialogFormVisible" width="30%" >
     <el-form label-width="80px" size="small">
       <el-form-item label="Username">
-        <el-input v-model="form.username" autocomplete="off"></el-input>
+        <el-input v-model="form.username" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Age">
-        <el-input v-model="form.age" autocomplete="off"></el-input>
+        <el-input-number v-model="form.age" :min="1" :max="120"></el-input-number>
       </el-form-item>
       <el-form-item label="Sex">
-        <el-select v-model="form.sex" placeholder="请选择">
+        <el-select v-model="form.sex" placeholder="Select">
           <el-option v-for="item in sexs" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="Email">
-        <el-input v-model="form.email" autocomplete="off"></el-input>
+        <el-input v-model="form.email" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Address">
-        <el-input v-model="form.address" autocomplete="off"></el-input>
+        <el-input type="textarea" v-model="form.address" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Role">
         <el-select v-model="form.role" placeholder="Select">
@@ -176,11 +176,11 @@ export default {
     save(){//会话框
       request.post("/user",this.form).then(res=>{
         if(res.code === '200'){
-          this.$message.success("保存成功")
+          this.$message.success("Save successfully")
           this.dialogFormVisible=false
           this.load()
         }else {
-          this.$message.error("保存失败")
+          this.$message.error("Save failed")
         }
       })
     },
@@ -199,10 +199,10 @@ export default {
     del(id){//删除某一个
       request.delete("/user/"+id).then(res=>{
         if(res.code === '200'){
-          this.$message.success("删除成功")
+          this.$message.success("Delete successfully")
           this.load()
         }else{
-          this.$message.error("删除失败")
+          this.$message.error("Delete failed")
         }
       })
     },
@@ -210,10 +210,10 @@ export default {
       let ids=this.multipleSelection.map(v=>v.id)// [{}, {}, {}] => [1,2,3] 把一个对象的数组转成一个纯id的数组
       request.post("/user/del/batch/",ids).then(res =>{
         if(res.code === '200'){
-          this.$message.success("批量删除成功")
+          this.$message.success("Batch deletion successfully")
           this.load()
         }else {
-          this.$message.error("批量删除失败")
+          this.$message.error("Batch delete failed")
         }
       })
     },
@@ -249,7 +249,7 @@ export default {
       window.open("http://localhost:9090/user/export")
     },
     handleExcelImportSuccess() {
-      this.$message.success("导入成功")
+      this.$message.success("Import successfully")
       this.load()
     }
 

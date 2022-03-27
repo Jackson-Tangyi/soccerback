@@ -35,29 +35,27 @@
       <el-table-column type="expand" label="Detail" width="80">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand" border="true">
-            <el-form-item label=" Name:">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
-            <el-form-item label=" Age:">
-              <span>{{ props.row.age }}</span>
-            </el-form-item>
-            <el-form-item label=" Sex:">
-              <span>{{ props.row.sex }}</span>
-            </el-form-item>
             <el-form-item label=" email:">
               <span>{{ props.row.email }}</span>
             </el-form-item>
             <el-form-item label=" phone:">
               <span>{{ props.row.phone }}</span>
             </el-form-item>
+            <el-form-item label=" Address:">
+              <span>{{ props.row.address }}</span>
+            </el-form-item>
+            <el-form-item label=" Description:">
+              <span>{{ props.row.description }}</span>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
+      <el-table-column prop="name" label="Name"></el-table-column>
       <el-table-column prop="career" label="Career"></el-table-column>
-      <el-table-column prop="address" label="Address"></el-table-column>
-      <el-table-column prop="description" label="Description"></el-table-column>
+      <el-table-column prop="age" label="Age"></el-table-column>
+      <el-table-column prop="sex" label="Sex"></el-table-column>
       <el-table-column label="Cure records">
         <template slot-scope="scope">
           <el-button type="info" @click="handleShowTreatments(scope.row.treatments)" round>Cure records<i class="el-icon-folder-opened"></i></el-button>
@@ -104,7 +102,9 @@
           <el-input-number v-model="form.age" :min="1" :max="120"></el-input-number>
         </el-form-item>
         <el-form-item label="Career">
-          <el-input v-model="form.career" autocomplete="off" style="width: 200px"></el-input>
+          <el-select v-model="form.career" placeholder="Select">
+            <el-option v-for="item in careers" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="Sex">
           <el-select v-model="form.sex" placeholder="Select">
@@ -132,7 +132,7 @@
 
     <el-dialog :visible.sync="treatmentVis">
       <el-table :data="treatments" border stripe>
-        <el-table-column prop="description" label="Description" width="120"></el-table-column>
+        <el-table-column prop="description" label="Description"></el-table-column>
         <el-table-column prop="start" label="Start"></el-table-column>
         <el-table-column prop="end" label="End"></el-table-column>
         <el-table-column prop="player" label="Player"></el-table-column>
@@ -167,6 +167,23 @@ export default {
         }, {
           value: 'Female',
           label: 'Female'
+        }],
+      careers: [
+        {
+          value: 'Masseur ',//按摩师
+          label: 'Masseur '
+        }, {
+          value: 'Orthopedist',//骨科医生
+          label: 'Orthopedist'
+        },{
+          value: 'Nutritionist',//营养师
+          label: 'Nutritionist'
+        },{
+          value: 'Sports psychologist',//运动心理医生
+          label: 'Sports psychologist'
+        },{
+          value: 'Rehabilitation trainer',//康复训练师
+          label: 'Rehabilitation trainer'
         }]
     }
   },

@@ -2,23 +2,23 @@
 <!-- 加不加div取决于整个页面 只能有一个根div 去包含所有 -->
 <div>
   <div style="margin: 10px 0">
-    <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name" ></el-input>
-    <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
-    <el-button type="warning" @click="reset">重置</el-button>
+    <el-input style="width: 200px" placeholder="Input name" suffix-icon="el-icon-search" v-model="name" ></el-input>
+    <el-button class="ml-5" icon="el-icon-search" circle @click="load"></el-button>
+    <el-button type="primary" @click="reset" round>Reset</el-button>
   </div>
 
   <div style="margin: 10px 0">
-    <el-button type="primary" @click="handleAdd(null)">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+    <el-button type="primary" @click="handleAdd(null)" round>Add <i class="el-icon-circle-plus-outline"></i></el-button>
     <el-popconfirm
         class="ml-5"
-        confirm-button-text='确定'
-        cancel-button-text='我再想想'
+        confirm-button-text='Confirm'
+        cancel-button-text='Rethink'
         icon="el-icon-info"
         icon-color="red"
-        title="您确定批量删除这些数据吗？"
+        title="Confirm Deletion"
         @confirm="delBatch"
     >
-      <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
+      <el-button type="danger" slot="reference" round>Batch deletion <i class="el-icon-remove-outline"></i></el-button>
     </el-popconfirm>
   </div>
 
@@ -29,7 +29,7 @@
     <el-table-column prop="name" label="Name" ></el-table-column>
     <el-table-column prop="path" label="Path" ></el-table-column>
     <el-table-column prop="pagePath" label="PagePath" ></el-table-column>
-    <el-table-column label="图标" class-name="fontSize18" align="center" label-class-name="fontSize12">
+    <el-table-column label="Icon" class-name="fontSize18" align="center" label-class-name="fontSize12">
       <template slot-scope="scope">
         <span :class="scope.row.icon" />
       </template>
@@ -37,18 +37,18 @@
     <el-table-column prop="description" label="Description" ></el-table-column>
     <el-table-column label="Operations"  width="300" align="center">
       <template slot-scope="scope">
-        <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.row.path">新增子菜单 <i class="el-icon-plus"></i></el-button>
-        <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
+        <el-button type="info" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.row.path" round>Add submenu <i class="el-icon-plus"></i></el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)" circle></el-button>
         <el-popconfirm
             class="ml-5"
-            confirm-button-text='确定'
-            cancel-button-text='我再想想'
+            confirm-button-text='Confirm'
+            cancel-button-text='Rethink'
             icon="el-icon-info"
             icon-color="red"
-            title="您确定删除吗？"
+            title="Confirm Deletion？"
             @confirm="del(scope.row.id)"
         >
-          <el-button type="danger" slot="reference">删除 <i class="el-icon-remove-outline"></i></el-button>
+          <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
         </el-popconfirm>
       </template>
     </el-table-column>
@@ -58,23 +58,23 @@
   <el-dialog title="Menu Information" :visible.sync="dialogFormVisible" width="30%" >
     <el-form label-width="100px" size="small">
       <el-form-item label="Name">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-input v-model="form.name" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Path">
-        <el-input v-model="form.path" autocomplete="off"></el-input>
+        <el-input v-model="form.path" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Page Path">
-        <el-input v-model="form.pagePath" autocomplete="off"></el-input>
+        <el-input v-model="form.pagePath" autocomplete="off" style="width: 300px"></el-input>
       </el-form-item>
       <el-form-item label="Icon">
-        <el-select clearable v-model="form.icon" placeholder="Please Select" style="width: 100%">
+        <el-select clearable v-model="form.icon" placeholder="Select" style="width: 100%">
           <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value">
             <i :class="item.value" /> {{ item.name }}
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="Description">
-        <el-input v-model="form.description" autocomplete="off"></el-input>
+        <el-input type="textarea" v-model="form.description" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -127,11 +127,11 @@ export default {
     save(){//会话框
       request.post("/menu",this.form).then(res=>{
         if(res.code === '200'){
-          this.$message.success("保存成功")
+          this.$message.success("Save successfully")
           this.dialogFormVisible=false
           this.load()
         }else {
-          this.$message.error("保存失败")
+          this.$message.error("Save failed")
         }
       })
     },
@@ -153,10 +153,10 @@ export default {
     del(id){//删除某一个
       request.delete("/menu/"+id).then(res=>{
         if(res.code === '200'){
-          this.$message.success("删除成功")
+          this.$message.success("Delete successfully")
           this.load()
         }else{
-          this.$message.error("删除失败")
+          this.$message.error("Delete failed")
         }
       })
     },
@@ -164,10 +164,10 @@ export default {
       let ids=this.multipleSelection.map(v=>v.id)// [{}, {}, {}] => [1,2,3] 把一个对象的数组转成一个纯id的数组
       request.post("/menu/del/batch/",ids).then(res =>{
         if(res.code === '200'){
-          this.$message.success("批量删除成功")
+          this.$message.success("Batch deletion successfully")
           this.load()
         }else {
-          this.$message.error("批量删除失败")
+          this.$message.error("Batch delete failed")
         }
       })
     },

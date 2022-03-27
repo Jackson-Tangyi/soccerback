@@ -18,6 +18,9 @@
         <result column="dribbling" property="dribbling" />
         <result column="pass" property="pass" />
         <result column="shot" property="shot" />
+        <result column="flag" property="flag" />
+        <result column="goal" property="goal" />
+        <result column="assist" property="assist" />
         <collection property="treatments" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Cure">
             <result column="cureDescription" property="description" />
             <result column="curePlace" property="place" />

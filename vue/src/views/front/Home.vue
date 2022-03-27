@@ -35,7 +35,7 @@ export default {
   },
   methods:{
     load(){
-      request.get("/file/pic").then(res=>{
+      request.get("/front/pic").then(res=>{
             console.log(res)
           this.pictures=res.data
       })

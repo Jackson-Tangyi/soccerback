@@ -51,11 +51,12 @@ public class CoachController {
         return Result.success();
     }
 
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
-        coachService.removeByIds(ids);
-        return Result.success();
-    }
+//批量删除
+//    @PostMapping("/del/batch")
+//    public Result deleteBatch(@RequestBody List<Integer> ids) {
+//        coachService.removeByIds(ids);
+//        return Result.success();
+//    }
 
     @GetMapping
     public Result findAll() {

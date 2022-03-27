@@ -74,6 +74,15 @@ public class Player implements Serializable {
       @ApiModelProperty("射门")
       private int shot;
 
+      @ApiModelProperty("射门")
+      private int goal;
+
+      @ApiModelProperty("射门")
+      private int assist;
+
+      @ApiModelProperty("前中后场")
+      private String flag;
+
       @TableField(exist = false)
       private List<Cure> treatments;
 }

@@ -30,16 +30,16 @@ export default {
       user:localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{},
       rules: {
         password: [
-          { required: true, message: '请输入原密码', trigger: 'blur' },
-          { min: 3, message: '长度不少于3位', trigger: 'blur' }
+          { required: true, message: 'Input original password', trigger: 'blur' },
+          { min: 3, message: 'Not less than 3 digits long', trigger: 'blur' }
         ],
         newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 3, message: '长度不少于3位', trigger: 'blur' }
+          { required: true, message: 'Input new password', trigger: 'blur' },
+          { min: 3, message: 'Not less than 3 digits long', trigger: 'blur' }
         ],
         confirmPassword: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 3, message: '长度不少于3位', trigger: 'blur' }
+          { required: true, message: 'Input new password again', trigger: 'blur' },
+          { min: 3, message: 'Not less than 3 digits long', trigger: 'blur' }
         ],
       }
     }
@@ -52,12 +52,12 @@ export default {
       this.$refs.pass.validate((valid) => {
         if (valid) {
           if (this.form.newPassword !== this.form.confirmPassword) {
-            this.$message.error("2次输入的新密码不相同")
+            this.$message.error("New passwords are different")
             return false
           }
           this.request.post("/user/password", this.form).then(res => {
             if (res.code === '200') {
-              this.$message.success("修改成功")
+              this.$message.success("Change successfully")
               this.$store.commit("logout")
             } else {
               this.$message.error(res.msg)

@@ -51,11 +51,11 @@ public class DirectorController {
         return Result.success();
     }
 
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
-        directorService.removeByIds(ids);
-        return Result.success();
-    }
+//    @PostMapping("/del/batch")
+//    public Result deleteBatch(@RequestBody List<Integer> ids) {
+//        directorService.removeByIds(ids);
+//        return Result.success();
+//    }
 
     @GetMapping
     public Result findAll() {
@@ -70,18 +70,10 @@ public class DirectorController {
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam Integer pageSize,
-                           @RequestParam(defaultValue = "") String name,
-                           @RequestParam(defaultValue = "") String email,
-                           @RequestParam(defaultValue = "") String address) {
+                           @RequestParam(defaultValue = "") String name) {
         QueryWrapper<Director> queryWrapper = new QueryWrapper<>();
         if(!"".equals(name)){
             queryWrapper.like("name",name);
-        }
-        if(!"".equals(email)){
-            queryWrapper.like("email",email);
-        }
-        if(!"".equals(address)){
-            queryWrapper.like("address",address);
         }
         queryWrapper.orderByDesc("id");
         return Result.success(directorService.page(new Page<>(pageNum, pageSize), queryWrapper));
@@ -110,16 +102,16 @@ public class DirectorController {
 
     }
 
-    @PostMapping("/import")
-    public Result imp(MultipartFile file) throws Exception{
-        InputStream inputStream=file.getInputStream();
-        ExcelReader reader=ExcelUtil.getReader(inputStream);
-//      方式1：(推荐) 通过 javabean的方式读取Excel内的对象，但是要求表头必须是英文，跟javabean的属性要对应起来
-        List<Director> list = reader.readAll(Director.class);
-
-        directorService.saveBatch(list);
-        return Result.success();
-    }
+//    @PostMapping("/import")
+//    public Result imp(MultipartFile file) throws Exception{
+//        InputStream inputStream=file.getInputStream();
+//        ExcelReader reader=ExcelUtil.getReader(inputStream);
+////      方式1：(推荐) 通过 javabean的方式读取Excel内的对象，但是要求表头必须是英文，跟javabean的属性要对应起来
+//        List<Director> list = reader.readAll(Director.class);
+//
+//        directorService.saveBatch(list);
+//        return Result.success();
+//    }
 
 }
 
