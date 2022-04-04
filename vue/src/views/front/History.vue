@@ -1,6 +1,6 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
-  <div style="position: center">
-    <div style="position: center;padding-left: 200px;padding-right: 200px">
+  <div>
+    <div>
         <el-timeline style="padding-top:50px">
           <el-timeline-item
               v-for="activity in activities"
@@ -10,11 +10,11 @@
               :color="activity.color"
               size="large"
               :timestamp="activity.createTime">
-            <el-card style="min-height: 200px">
+            <el-card>
               <el-col :span="12">
                 <template>
                   <el-image
-                      style="width: 600px; height: 400px"
+                      style="width: 400px; height: 250px"
                       :src="activity.url"
                       :preview-src-list="[activity.url]">
                   </el-image>

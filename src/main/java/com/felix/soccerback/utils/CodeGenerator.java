@@ -34,7 +34,7 @@ public class CodeGenerator {
 //                    builder.mapperBuilder().enableMapperAnnotation().build();
                     builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
-                    builder.addInclude("club_achievement") // 设置需要生成的表名
+                    builder.addInclude("club_comment") // 设置需要生成的表名
                             .addTablePrefix("t_", "club_"); // 设置过滤表前缀
                 })
 //                .templateEngine(new FreemarkerTemplateEngine()) // 加上这句的话就是使用Freemarker引擎模板，

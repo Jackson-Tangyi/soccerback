@@ -9,7 +9,7 @@
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd" round>Add <i class="el-icon-circle-plus-outline"></i></el-button>
+      <el-button v-if="user.role==='ROLE_ADMIN'" round type="primary" @click="handleAdd">Add <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='Confirm'
@@ -19,16 +19,16 @@
           title="Confirm deletion？"
           @confirm="delBatch"
       >
-        <el-button type="danger" slot="reference" round>Batch delete <i class="el-icon-remove-outline"></i></el-button>
+        <el-button v-if="user.role==='ROLE_ADMIN'" slot="reference" round type="danger">Batch delete <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
       <el-upload action="http://localhost:9090/doctor/import"
                  :show-file-list="false"
                  accept="xlsx"
                  :on-success="handleExcelImportSuccess"
                  style="display: inline-block">
-        <el-button type="success" class="ml-5" round>Import <i class="el-icon-bottom"></i></el-button>
+        <el-button v-if="user.role==='ROLE_ADMIN'" class="ml-5" round type="success">Import <i class="el-icon-bottom"></i></el-button>
       </el-upload>
-      <el-button type="info" @click="exp" class="ml-5" round>Export <i class="el-icon-top"></i></el-button>
+      <el-button v-if="user.role==='ROLE_ADMIN'" class="ml-5" round type="info" @click="exp">Export <i class="el-icon-top"></i></el-button>
     </div>
 
     <el-table :data="tableData" stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
@@ -61,7 +61,7 @@
           <el-button type="info" @click="handleShowTreatments(scope.row.treatments)" round>Cure records<i class="el-icon-folder-opened"></i></el-button>
         </template>
       </el-table-column>
-      <el-table-column label="Operations"  align="center">
+      <el-table-column v-if="user.role==='ROLE_ADMIN'"  align="center" label="Operations">
         <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)" circle></el-button>
           <el-popconfirm
@@ -148,6 +148,7 @@ export default {
   name: "Doctor",
   data(){
     return{
+      user:localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : "",
       tableData: [],
       total: 0,
       pageNum: 1,

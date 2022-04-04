@@ -1,9 +1,9 @@
 <template>
-  <div style="padding-right: 150px;padding-left: 150px">
+  <div>
       <h1> Forwards </h1>
     <el-divider></el-divider>
     <el-row :gutter="10">
-      <el-col :span="6" v-for="item in Forwards">
+      <el-col v-for="item in Forwards" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -16,7 +16,7 @@
     <h1> Midfielders </h1>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in Midfielders">
+      <el-col v-for="item in Midfielders" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -28,7 +28,7 @@
     <h1>Defenders</h1>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in Defenders">
+      <el-col v-for="item in Defenders" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -40,7 +40,7 @@
     <h1>Goalkeepers</h1>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in Goalkeepers">
+      <el-col v-for="item in Goalkeepers" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>

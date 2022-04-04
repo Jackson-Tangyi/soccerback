@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 
@@ -64,7 +65,9 @@ public class FrontController {
     @GetMapping("/pic")
     public Result findPic(){
         QueryWrapper<Files> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("type","png").or().eq("type","jpg");
+        queryWrapper.eq("type","jpg");
+        queryWrapper.like("name","home");
+        queryWrapper.eq("is_delete",0);
         return Result.success(fileMapper.selectList(queryWrapper));
     }
 
@@ -79,13 +82,17 @@ public class FrontController {
     }
     // 根据id查询视频 video details
     @GetMapping("/video/{id}")
-    public Result findVideoById(@PathVariable Integer id) {
+    public Result findVideoById(@PathVariable Integer id, HttpServletResponse response) {
         Files video = fileMapper.selectById(id);
+//        response.setHeader("Accept-Ranges", "bytes");
+//        response.setHeader("Content-Length", String.valueOf(video.getSize()));
         return Result.success(video);
     }
-
+    //前台界面比赛信息展示
     @GetMapping("/findAllGames")
     public Result findAllGames() {
         return Result.success(gameService.list());
     }
+
+
 }

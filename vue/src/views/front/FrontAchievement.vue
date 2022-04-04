@@ -1,10 +1,10 @@
 <template>
-  <div style="padding-right: 150px;padding-left: 150px">
+  <div>
     <h1>Italian Cup Champion</h1>
     <span>Total: {{ItalianCup.length}}</span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in ItalianCup">
+      <el-col v-for="item in ItalianCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -19,7 +19,7 @@
     <span>Total: {{ItalianSuperCup.length}} </span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in ItalianSuperCup">
+      <el-col v-for="item in ItalianSuperCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -34,7 +34,7 @@
     <span>Total: {{EuropeanChampionshipCup.length}}</span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in EuropeanChampionshipCup">
+      <el-col v-for="item in EuropeanChampionshipCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -49,7 +49,7 @@
     <span>Total: {{EuropeanChampionshipCup.length}}</span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in IntercontinentalCup">
+      <el-col v-for="item in IntercontinentalCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -64,7 +64,7 @@
     <span>Total: {{EuropeanChampionshipCup.length}}</span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in ClubWorldCup">
+      <el-col v-for="item in ClubWorldCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>
@@ -79,7 +79,7 @@
     <span>Total: {{ItalianLeagueCup.length}}</span>
     <el-divider></el-divider>
     <el-row :gutter="10" >
-      <el-col :span="6" v-for="item in ItalianLeagueCup">
+      <el-col v-for="item in ItalianLeagueCup" :key="item.id" :span="6">
         <el-card style="margin: 10px">
           <img :src="item.image" style="width: 200px;height:200px;margin: 15px"/>
           <el-divider></el-divider>

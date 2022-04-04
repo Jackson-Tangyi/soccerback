@@ -5,9 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.Quarter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.felix.soccerback.common.Result;
-import com.felix.soccerback.entity.Cure;
-import com.felix.soccerback.entity.Player;
-import com.felix.soccerback.entity.User;
+import com.felix.soccerback.entity.*;
 import com.felix.soccerback.mapper.CureMapper;
 import com.felix.soccerback.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +116,45 @@ public class EchartsController {
 
         return Result.success(CollUtil.newArrayList(count0,count1));
     }
+
+    //后台Home主页内容展示
+//整个俱乐部人员组成
+    @GetMapping("/whole/composition")
+    public Result composition(){
+        int playerCount = (int)playerService.count();
+        int doctorCount = (int)doctorService.count();
+        int coachCount = (int)coachService.count();
+
+        return Result.success(CollUtil.newArrayList(playerCount,coachCount,doctorCount));
+    }
+//整个俱乐部的男女比例
+    @GetMapping("/whole/sex")
+    public Result wholeSex(){
+        int totalMale,totalFemale;
+
+        QueryWrapper<Coach> queryWrapper0=new QueryWrapper<Coach>();
+        queryWrapper0.eq("sex","Female");
+        QueryWrapper<Coach> queryWrapper1=new QueryWrapper<Coach>();
+        queryWrapper1.eq("sex","Male");
+        int coachCountFemale = (int) coachService.count(queryWrapper0);
+        int coachCountMale = (int) coachService.count(queryWrapper1);
+
+        QueryWrapper<Doctor> queryWrapper2=new QueryWrapper<Doctor>();
+        queryWrapper0.eq("sex","Female");
+        QueryWrapper<Doctor> queryWrapper3=new QueryWrapper<Doctor>();
+        queryWrapper1.eq("sex","Male");
+        int DoctorCountFemale = (int) coachService.count(queryWrapper0);
+        int DoctorCountMale = (int) coachService.count(queryWrapper1);
+
+        int playerCount = (int)playerService.count();
+
+        totalMale=coachCountMale+DoctorCountMale+playerCount;
+        totalFemale=coachCountFemale+DoctorCountFemale;
+
+        return Result.success(CollUtil.newArrayList(totalFemale,totalMale));
+    }
+
+
 //PlayerChart 雷达图
     @GetMapping("/radar/{val}")
     public Result findRadar(@PathVariable Integer val) {

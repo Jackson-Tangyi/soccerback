@@ -48,7 +48,7 @@ public class Cure implements Serializable {
       @ApiModelProperty("治疗持续日期")
       private String end;
 
-      @ApiModelProperty("伤病具体名称")
+      @ApiModelProperty("描述状态能够上场")
       private String description;
 
       @ApiModelProperty("伤病部位")

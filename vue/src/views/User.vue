@@ -43,7 +43,9 @@
     <el-table-column prop="role" label="Role">
       <template slot-scope="scope">
         <el-tag type="primary" v-if="scope.row.role === 'ROLE_ADMIN'">ADMIN</el-tag>
-        <el-tag type="warning" v-if="scope.row.role === 'ROLE_USER'">USER</el-tag>
+        <el-tag v-if="scope.row.role === 'ROLE_COACH'" type="warning">COACH</el-tag>
+        <el-tag v-if="scope.row.role === 'ROLE_DOCTOR'" type="danger">DOCTOR</el-tag>
+        <el-tag v-if="scope.row.role === 'ROLE_USER'" type="success">USER</el-tag>
       </template>
     </el-table-column>
     <el-table-column label="Operations"  width="200" align="center">

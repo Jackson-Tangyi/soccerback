@@ -22,6 +22,7 @@
         <result column="goal" property="goal" />
         <result column="assist" property="assist" />
         <collection property="treatments" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Cure">
+<!--      是为了让下面的查询出来的字段名称跟属性名称对应起来      -->
             <result column="cureDescription" property="description" />
             <result column="curePlace" property="place" />
             <result column="cureStart" property="start" />
@@ -29,6 +30,7 @@
             <result column="cureDoctor" property="doctor"/>
         </collection>
     </resultMap>
+
     <select id="findPage" resultMap="pagePlayer">
         select club_player.*,cc.description as cureDescription,cc.place as curePlace,cc.start as cureStart,cc.end as cureEnd,cd.name as cureDoctor from club_player
         left join club_cure as cc

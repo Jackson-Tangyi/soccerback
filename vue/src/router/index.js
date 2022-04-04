@@ -31,6 +31,18 @@ const routes = [
       {path:'frontCoach',name:'FrontCoach',component:()=>import('../views/front/FrontCoach.vue')},
       {path:'achievement',name:'FrontAchievement',component:()=>import('../views/front/FrontAchievement.vue')},
       {path:'frontGame',name:'FrontGame',component:()=>import('../views/front/FrontGame.vue')},
+      {path:'frontNews',name:'FrontNews',component:()=>import('../views/front/News.vue')},
+      {path:'frontNewsDetail',name:'frontNewsDetail',component:()=>import('../views/front/NewsDetail.vue')},
+      {
+        path: 'person',
+        name: 'FrontPerson',
+        component: () => import('../views/front/Person.vue')
+      },
+      {
+        path: 'password',
+        name: 'FrontPassword',
+        component: () => import('../views/front/Password.vue')
+      }
     ]
   }
 ]
@@ -53,7 +65,6 @@ export const resetRouter = () => {
 export const setRoutes=()=>{
   const storeMenus=localStorage.getItem("menus");
   if(storeMenus){
-
     //获取当前的路由对象名称数组
     const currentRouteNames=router.getRoutes().map(v=>v.name)
     if(!currentRouteNames.includes("Layout")){//如果这个里面不包含主界面的组件，那么需要拼装路由
@@ -77,9 +88,11 @@ export const setRoutes=()=>{
           })
         }
       })
-      // 动态添加到现在的路由对象中去
-      router.addRoute(layoutRoute)
-    }
+
+        // 动态添加到现在的路由对象中去
+        router.addRoute(layoutRoute)
+      }
+
   }
 }
 
@@ -91,8 +104,9 @@ router.beforeEach((to, from, next) => {
   localStorage.setItem("currentPathName", to.name)  // 设置当前的路由名称，为了在Header组件中去使用
   store.commit("setPath")  // 触发store的数据更新
 
-  // 未找到路由的情况
+  //未找到路由的情况
   if (!to.matched.length) {
+    //没找到路由但是有菜单说明菜单没有这个路由，404
     const storeMenus = localStorage.getItem("menus")
     if (storeMenus) {
       next("/404")

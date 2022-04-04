@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.felix.soccerback.common.Constants;
+import com.felix.soccerback.config.AuthAccess;
 import com.felix.soccerback.entity.User;
 import com.felix.soccerback.exception.ServiceException;
 import com.felix.soccerback.service.IUserService;
@@ -25,10 +26,19 @@ public class JwtInterceptor implements HandlerInterceptor {  //自定义拦截�
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("token");
-        //如果不是映射到方法直接通过
+
+        // 如果不是映射到方法直接通过
+        //    instanceof 是 Java 的保留关键字。它的作用是测试它左边的对象是否是它右边的类的实例，返回 boolean 的数据类型。
         if(!(handler instanceof HandlerMethod)){
             return true;
+        } else {
+            HandlerMethod h = (HandlerMethod) handler;
+            AuthAccess authAccess = h.getMethodAnnotation(AuthAccess.class);
+            if (authAccess != null) {//判断是否使用了自定义注解,如果使用了就放行
+                return true;
+            }
         }
+
         //执行认证
         if(StrUtil.isBlank(token)){
             throw new ServiceException(Constants.CODE_401,"No token!Please login again! ");

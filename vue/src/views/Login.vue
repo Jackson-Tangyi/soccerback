@@ -57,11 +57,11 @@ export default {
       this.$refs['userForm'].validate((valid)=>{//这里的form对应于上面表单的ref
         if(valid){//表示验证规则合法才会发送下面的请求
           if(!this.form.validCode){//验证码
-            this.$message.error("请填写验证码")
+            this.$message.error("Please input verification code")
             return
           }
           if(this.form.validCode.toLowerCase()!== this.validCode.toLowerCase()){
-            this.$message.error("验证码填写错误")
+            this.$message.error("Verification code error")
             return
           }
           request.post("/user/login",this.form).then(res=>{
@@ -71,8 +71,12 @@ export default {
 
               // 动态设置当前用户的路由
               setRoutes()
-              this.$router.push("/")
               this.$message.success("Login Success")
+              if(res.data.role === 'ROLE_USER'){//如果是普通用户，那么只能在前台
+                this.$router.push("/front/home")
+              }else{
+                this.$router.push("/game")//教练、医生、管理员可以进入后台
+              }
             }else {
               this.$message.error(res.msg)
             }

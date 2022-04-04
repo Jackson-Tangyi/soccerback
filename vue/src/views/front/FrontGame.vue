@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-left: 100px;padding-right: 100px">
+  <div>
     <h1>Italian Cup</h1>
     <el-card>
       <el-table :data="ItalianCup" border stripe :header-cell-class-name="'headerBg'">

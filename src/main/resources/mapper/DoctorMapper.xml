@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.felix.soccerback.mapper.DoctorMapper">
-    <resultMap id="pageDoctor" type="com.felix.soccerback.entity.Doctor">
-        <result column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="career" property="career" />
-        <result column="age" property="age" />
-        <result column="sex" property="sex" />
-        <result column="description" property="description" />
-        <result column="email" property="email"/>
-        <result column="address" property="address" />
-        <result column="phone" property="phone" />
-        <collection property="treatments" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Cure">
-            <result column="cureDescription" property="description" />
-            <result column="cureStart" property="start" />
-            <result column="cureEnd" property="end"/>
-            <result column="curePlayer" property="player"/>
-        </collection>
-    </resultMap>
+
     <select id="findPage" resultMap="pageDoctor">
         select club_doctor.*,cc.description as cureDescription,cc.start as cureStart,cc.end as cureEnd,cp.name as curePlayer from club_doctor
         left join club_cure as cc
@@ -36,4 +20,22 @@
             </if>
         </where>
     </select>
+    <resultMap id="pageDoctor" type="com.felix.soccerback.entity.Doctor">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="career" property="career" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="description" property="description" />
+        <result column="email" property="email"/>
+        <result column="address" property="address" />
+        <result column="phone" property="phone" />
+        <collection property="treatments" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Cure">
+            <result column="cureDescription" property="description" />
+            <result column="cureStart" property="start" />
+            <result column="cureEnd" property="end"/>
+            <result column="curePlayer" property="player"/>
+        </collection>
+    </resultMap>
+
 </mapper>

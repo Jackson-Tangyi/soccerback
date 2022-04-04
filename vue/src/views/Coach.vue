@@ -10,15 +10,15 @@
     </div>
 <!-- 新增、批量删除、导入、导出 -->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd" round>Add <i class="el-icon-circle-plus-outline"></i></el-button>
+      <el-button v-if="user.role==='ROLE_ADMIN'" round type="primary" @click="handleAdd">Add <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-upload action="http://localhost:9090/coach/import"
                  :show-file-list="false"
                  accept="xlsx"
                  :on-success="handleExcelImportSuccess"
                  style="display: inline-block">
-        <el-button type="success" class="ml-5" round>Import <i class="el-icon-bottom"></i></el-button>
+        <el-button v-if="user.role==='ROLE_ADMIN'" class="ml-5" round type="success">Import <i class="el-icon-bottom"></i></el-button>
       </el-upload>
-      <el-button type="info" @click="exp" class="ml-5" round>Export <i class="el-icon-top"></i></el-button>
+      <el-button v-if="user.role==='ROLE_ADMIN'" class="ml-5" round type="info" @click="exp">Export <i class="el-icon-top"></i></el-button>
     </div>
 
     <el-table :data="tableData" stripe :header-cell-class-name="'headerBg'" @selection-change="handleSelectionChange">
@@ -62,7 +62,7 @@
       <el-table-column label="Operations"  width="400" align="center">
         <template slot-scope="scope">
           <el-button type="warning" @click="lookGames(scope.row.games)" round>Games attended <i class="el-icon-document"></i></el-button>
-          <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row)" circle></el-button>
+          <el-button v-if="user.role==='ROLE_ADMIN'" circle icon="el-icon-edit" type="primary" @click="handleEdit(scope.row)"></el-button>
           <el-popconfirm
               class="ml-5"
               confirm-button-text='Confirm'
@@ -72,7 +72,7 @@
               title="Confirm deletion？"
               @confirm="del(scope.row.id)"
           >
-            <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
+            <el-button v-if="user.role==='ROLE_ADMIN'" slot="reference" circle icon="el-icon-delete" type="danger"></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -83,7 +83,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[5, 10, 15]"
+          :page-sizes="[5, 10, 15,20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -174,12 +174,12 @@
     </el-dialog>
 
 <!--  出席的比赛 -->
-    <el-dialog title="Game Attended" :visible.sync="vis" width="50%" >
+    <el-dialog :visible.sync="vis" title="Game Attended" width="60%" >
       <el-table :data="games" border stripe>
-        <el-table-column prop="name" label="Name" width="120"></el-table-column>
+        <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column prop="date" label="date"></el-table-column>
         <el-table-column prop="homeaway" label="Home/Away"></el-table-column>
-        <el-table-column prop="score" label="Score"></el-table-column>
+        <el-table-column label="Score" prop="score" width="100px"></el-table-column>
         <el-table-column prop="place" label="Place"></el-table-column>
         <el-table-column prop="type" label="Type"></el-table-column>
       </el-table>
@@ -194,6 +194,7 @@ export default {
   name: "Coach",
   data(){
     return{
+      user:localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : "",
       tableData: [],
       total: 0,
       pageNum: 1,

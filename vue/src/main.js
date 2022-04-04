@@ -15,8 +15,10 @@ require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 Vue.use(VideoPlayer)
 
-// import VueCoreVideoPlayer from 'vue-core-video-player'
-// Vue.use(VueCoreVideoPlayer,{lang:'en'})
+// main.js全局注册 markdown编辑器
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
 
 
 Vue.use(ElementUI, {size:"small",locale})

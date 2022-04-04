@@ -20,7 +20,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-  @TableName("club_coach")
+@TableName("club_coach")
 @ApiModel(value = "Coach对象", description = "")
 public class Coach implements Serializable {
 

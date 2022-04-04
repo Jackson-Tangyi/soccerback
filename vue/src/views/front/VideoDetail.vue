@@ -9,27 +9,18 @@
                   :options="playerOptions">
     </video-player>
   </div>
-<!--    <div class="player-container">-->
-<!--      <vue-core-video-player-->
-<!--           :autoplay="false"-->
-<!--           :loop="false"-->
-<!--           :muted="false"-->
-<!--           :src="videoSource"-->
-<!--           @play="playFunc($event)"-->
-<!--           @pause="pauseFunc($event)"-->
-<!--            controls="auto">-->
-
-<!--      </vue-core-video-player>-->
-<!--    </div>-->
 </template>
 
 <script>
 import request from "@/utils/request";
+import 'vue-video-player/src/custom-theme.css'
+import 'video.js/dist/video-js.css'
+
 
 export default {
   name: "VideoDetail",
-  data(){
-    return{
+  data() {
+    return {
       // video:{},
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
@@ -52,26 +43,29 @@ export default {
           remainingTimeDisplay: false, // 是否显示剩余时间功能
           fullscreenToggle: true // 是否显示全屏按钮
         },
-        currentTime:null
+        currentTime: null
       }
     }
   },
   created() {
-    let id=this.$route.query.id
+    let id = this.$route.query.id
     console.log(id)
-    request.get("/front/video/"+id).then(res=>{
+    request.get("/front/video/" + id).then(res => {
       console.log(res.data.url)
-      this.playerOptions.sources[0].src=res.data.url
+      this.playerOptions.sources[0].src = res.data.url
 
     })
   },
-  methods:{
+  methods: {
+    // VideoDetail: function (id) {
+    //   this.playerOptions.sources[0]['src'] = serverIp + this.$apis.common.getFile+'?id=' + id;
+    // },
     /* 获取视频播放进度 */
-    onPlayerTimeupdate (player) {
+    onPlayerTimeupdate(player) {
       this.currentTime = player.cache_.currentTime
     },
     /* 设置视频开始的进度 */
-    playerReadied (player) {
+    playerReadied(player) {
       player.currentTime(this.currentTime)
     },
     // 暂停回调   将视频播放的时间保存
@@ -82,14 +76,31 @@ export default {
 
     },
 
-  }
+  },
+  // beforeMount() {
+  //   let id = this.$route.query.id;
+  //   if (id != undefined && id != null) {
+  //     //编辑
+  //     localStorage.setItem("videoId", id);
+  //     this.VideoDetail(id);
+  //   } else {
+  //     id = localStorage.getItem("videoId");
+  //     if (id != undefined && id != null) {
+  //       this.VideoDetail(id);
+  //     } else {
+  //       localStorage.removeItem("videoId");
+  //     }
+  //   }
+  // }
 }
 </script>
 
 <style scoped>
 .demo{
-  padding-right: 200px;
-  padding-left: 200px;
-  height: 800px;
+  padding-top: 30px;
+}
+
+.demo >>> .vjs-progress-control{
+  pointer-events: none;
 }
 </style>

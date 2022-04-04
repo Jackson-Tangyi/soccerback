@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.felix.soccerback.mapper.CoachMapper">
 
+    <select id="findPage" resultMap="pageCoaches" parameterType="Map">
+        select club_coach.* from club_coach
+        <where>
+            <if test="name != null and name != ''">
+                and club_coach.name like concat('%', #{name} ,'%')
+            </if>
+            <if test="email != null and email != ''">
+                and club_coach.email like concat('%', #{email} ,'%')
+            </if>
+            <if test="address != null and address != ''">
+                and club_coach.address like concat('%', #{address} ,'%')
+            </if>
+        </where>
+    </select>
+
     <resultMap id="pageCoaches" type="com.felix.soccerback.entity.Coach">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
@@ -14,31 +29,21 @@
         <result column="address" property="address"/>
         <result column="image" property="image"/>
         <result column="cid" property="cid"/>
-        <collection property="games" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Game">
+<!-- 嵌套子查询 -->
+        <collection property="games" select="getSubItems" column="cid" javaType="java.util.ArrayList" ofType="com.felix.soccerback.entity.Game">
 <!--        column 指的是查询出来的结果的我设置的名字  property 指的是对应表里面字段的名字    -->
-            <result column="gameName" property="name"/>
-            <result column="gameDate" property="date"/>
-            <result column="gameHomeAway" property="homeaway"/>
-            <result column="gameScore" property="score"/>
-            <result column="gamePlace" property="place"/>
-            <result column="gameType" property="type"/>
+<!--            <result column="gameName" property="name"/>-->
+<!--            <result column="gameDate" property="date"/>-->
+<!--            <result column="gameHomeAway" property="homeaway"/>-->
+<!--            <result column="gameScore" property="score"/>-->
+<!--            <result column="gamePlace" property="place"/>-->
+<!--            <result column="gameType" property="type"/>-->
         </collection>
     </resultMap>
 
-    <select id="findPage" resultMap="pageCoaches">
-        select club_coach.*,cg.name as gameName,cg.date as gameDate,cg.homeaway as gameHomeAway,cg.score as gameScore,cg.place as gamePlace ,cg.type as gameType from club_coach
-        left join club_game as cg
-        on club_coach.cid=cg.coachid
-        <where>
-            <if test="name != null and name != ''">
-                and club_coach.name like concat('%', #{name} ,'%')
-            </if>
-            <if test="email != null and email != ''">
-                and club_coach.email like concat('%', #{email} ,'%')
-            </if>
-            <if test="address != null and address != ''">
-                and club_coach.address like concat('%', #{address} ,'%')
-            </if>
-        </where>
+    <select id="getSubItems" parameterType="int" resultType="com.felix.soccerback.entity.Game">
+        select cg.name,cg.date,cg.homeaway,cg.score,cg.place,cg.type
+        from club_game as cg
+        where cg.coachid=#{cid}
     </select>
 </mapper>
