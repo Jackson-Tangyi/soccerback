@@ -1,0 +1,44 @@
+package com.felix.soccerback.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author Felix
+ * @since 2022-04-03
+ */
+@Getter
+@Setter
+@TableName("club_news")
+@ApiModel(value = "News对象", description = "")
+public class News implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+      @TableId(value = "id", type = IdType.AUTO)
+      private Integer id;
+
+      @ApiModelProperty("标题")
+      private String name;
+
+      @ApiModelProperty("内容")
+      private String content;
+
+      @ApiModelProperty("发布人")
+      private String user;
+
+      @ApiModelProperty("发布时间")
+      private String time;
+
+
+}
